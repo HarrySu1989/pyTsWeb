@@ -89,8 +89,8 @@ def index():
     html_detail="<ul>"
     for idx, row in page_data.iterrows():
         html_detail+="<li>"
-        html_detail+=f'<a href="#">{row['物料代码']}</a>'
-        html_detail+=f'<div>{row['物料名称'] }</div>'
+        html_detail+=f'<a href="#">{row["物料代码"]}</a>'
+        html_detail+=f'<div>{row["物料名称"] }</div>'
         html_detail+="</li>"
     html_detail+="</ul>"
     html_page="""
