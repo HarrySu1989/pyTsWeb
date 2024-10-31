@@ -2,6 +2,8 @@ import pyodbc
 import SQL.ClsClms
 import socket
 import pandas as pd
+import urllib
+from sqlalchemy import create_engine
 sConnect = "DRIVER={ODBC Driver 17 for SQL Server};SERVER=192.168.0.90;DATABASE=TestModuleResult;UID=xjs;PWD=Xia0601"
 if socket.gethostname()== 'LAPTOP-57TK7AD9':
     sConnect = 'DRIVER={ODBC Driver 17 for SQL Server};SERVER=localhost;DATABASE=TestModuleResult;UID=sa;PWD=123456'
@@ -9,9 +11,13 @@ print(f"数据库配置:{sConnect}")
 
 
 def get_table(s0) -> pd.DataFrame:
-    con = pyodbc.connect(sConnect, autocommit=True)
-    data = pd.read_sql(sql=s0, con=con, coerce_float=True)
-    return data
+    # 创建SQLAlchemy引擎
+    engine = create_engine("mssql+pyodbc:///?odbc_connect=%s" % sConnect)
+    # 使用pandas读取SQL查询结果到DataFrame
+    df = pd.read_sql(s0, engine)
+    # 关闭连接（SQLAlchemy引擎管理连接池，通常不需要手动关闭）
+    engine.dispose()
+    return df
 
 def get_rows(s0):
     cn = pyodbc.connect(sConnect)

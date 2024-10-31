@@ -47,9 +47,14 @@ class Data:
         if len(df) == 0:
             print(f"工序更新：无需更新，当前共{len(self.df)}行")
             return
-        self.df = self.df._append(df, ignore_index=True)
-        print(df)
-        print(f"工序更新：插入{len(self.df)}行")
+        # df = df.dropna(axis=1, how='all')  # 去掉全为 NA 的列
+        len_a = len(self.df)
+        if not len(self.df):
+            self.df=df
+        else:
+            self.df = self.df._append(df, ignore_index=True)
+        # print(df)
+        print(f"工序更新：插入{len(df)}行,当前共{len(self.df)}行")
         self.id_cur=self.df.iloc[-1]["ID"]
 
     def get_list_order(self):

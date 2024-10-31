@@ -4,6 +4,7 @@ from bp.bom.route import bp as bp_bom
 from bp.auth.auth import bp as bp_auth
 from bp.station.route import bp as bp_station
 import glb.ViewBase as vb
+import logging
 app = Flask(__name__)
 app.secret_key = 'mysecretkey'
 vb.set_add(app,"工序", bp_station)
