@@ -10,7 +10,7 @@ vb.set_add(app,"工序", bp_station)
 vb.set_add(app,"采购单", bp_purchase)
 vb.set_add(app,"BOM", bp_bom)
 app.register_blueprint(bp_auth)
-
+#
 # # before_request/ before_first_request/ after_request
 # # hook
 # @app.before_request
