@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+{#https://blog.csdn.net/qq_43884155/article/details/106995653#}
+{#https://echarts.apache.org/handbook/zh/get-started/#}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #pie {
+            width: 400px;
+            height: 400px;
+        }
+    </style>
+    <script type="text/javascript" src="echarts.js"></script>
+</head>
+
+<body>
+    <div id="pie"></div>
+    <script>
+        // 饼状图
+        // 基于准备好的dom，初始化echarts实例
+        var pie = echarts.init(document.getElementById('pie'));
+        // 指定图表的配置项和数据
+        pieOption = {
+            // 标题
+            title: {
+                text: 'echarts实现饼状图'
+            },
+            // 图例
+            tooltip: {
+                show: true,
+                trigger: "item",
+                backgroundColor: "#1677FF",
+                // {a}（系列名称），{b}（数据项名称），{c}（数值）, {d}（百分比）
+                formatter: "{a}：{b}<br/>{c}吨({d}%)"
+            },
+            // 不同区域的颜色
+            color: ['#3e87ff', '#65b2f3', '#b9cfec'],
+            series: [
+                {
+                    name: '品种',
+                    type: 'pie',
+                    // 数组的第一项是内半径，第二项是外半径；可以设置不同的内外半径显示成圆环图
+                    radius: '50%',
+                    // 饼图的中心（圆心）坐标，数组的第一项是横坐标，第二项是纵坐标；设置成百分比时第一项是相对于容器宽度，第二项是相对于容器高度
+                    center: ['50%', '50%'],
+                    data: [
+                        { value: 2000, name: '苹果' },
+                        { value: 2000, name: '油桃' },
+                        { value: 4000, name: '西瓜' },
+
+                    ],
+                    itemStyle: {
+                        // 显示图例
+                        normal: {
+                            label: {
+                                show: true
+                            },
+                            labelLine: {
+                                show: true
+                            }
+                        },
+                        emphasis: {
+                            // 图形阴影的模糊大小
+                            shadowBlur: 10,
+                            // 阴影水平方向上的偏移距离
+                            shadowOffsetX: 0,
+                            // 阴影颜色
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        pie.setOption(pieOption);
+    </script>
+</body>
+
+</html>
