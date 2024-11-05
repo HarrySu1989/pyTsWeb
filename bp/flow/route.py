@@ -87,7 +87,7 @@ class ClsTest():
       if not b_load:
         self.log = "测试结束(等待超时，网页加载异常)"
         return
-      self.log = "测试结束(完成)"
+
       bt_begin = driver.find_element(By.ID,'button-1051-btnInnerEl')
       if bt_begin.text != "开始":
         self.log = f"{url}测试被占用"
@@ -101,6 +101,12 @@ class ClsTest():
       while bt_begin.text != "开始":
         self.log = f"等待测试完成"
         time.sleep(1)
+        if self.sq_end:
+          bt_begin.click()
+          self.log = "测试结束(中断)"
+          self.sq_end=False
+          return
+      self.log = "测试结束(完成)"
     except Exception as e:
       self.log = f"测试结束(异常退出)"
     finally:
