@@ -99,7 +99,9 @@ class ClsTest():
       bt_begin.click()
       time.sleep(2)
       while bt_begin.text != "开始":
-        self.log = f"等待测试完成"
+        text_time = driver.find_element(By.ID,'component-1084')
+        self.log = f"等待测试完成({text_time.text})"
+
         time.sleep(1)
         if self.sq_end:
           bt_begin.click()
