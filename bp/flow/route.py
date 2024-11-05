@@ -9,6 +9,10 @@ from selenium.webdriver.chrome.service import Service
 import threading
 from time import sleep
 from flask import Flask, render_template, jsonify, request
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.common import TimeoutException
 
 bp = Blueprint('flow', __name__, url_prefix='/flow')
 
@@ -49,7 +53,7 @@ class ClsTest():
       elif req==-1:
         self.sq_end=True
         return "结束申请"
-      return f"{self.log}[{self.count}]"
+      return f"{self.log}"
     if req==0:
       self.t = threading.Thread(target=self.thred_run)
       self.t.start()
@@ -59,16 +63,46 @@ class ClsTest():
     return self.log
 
   def thred_run(self):
-    while True:
-      self.count += 1
-      sleep(1)
-      if self.count >20:
-        self.log = "测试结束(完成)"
+    chrome_options = Options()
+    chrome_options.add_argument("--window-size=1200,1000")
+    service = Service('./bp/flow/chromedriver-130.0.6723.91.exe')
+    driver = webdriver.Chrome(options=chrome_options, service=service)
+    try:
+      url = 'http://10.77.77.108/'
+      self.log = f"正在加载URL：{url}"
+      try:
+        driver.get(url)
+      except:
+        self.log = f"测试结束(无法加载URL：{url})"
         return
-      if self.sq_end:
-        self.log = "测试结束(中断)"
-        self.count = 0
+      b_load = True
+      try:
+        element = WebDriverWait(driver, 5).until(
+          EC.visibility_of_element_located((By.ID, 'button-1051-btnInnerEl'))
+        )
+      except TimeoutException:
+        b_load = False
+      if not b_load:
+        self.log = "测试结束(等待超时，网页加载异常)"
         return
+      self.log = "测试结束(完成)"
+    except Exception as e:
+      self.log = f"测试结束(异常退出)"
+    finally:
+        driver.quit()
+
+
+
+    # while True:
+    #   self.count += 1
+    #   sleep(1)
+    #   if self.count >20:
+    #     self.log = "测试结束(完成)"
+    #     return
+    #   if self.sq_end:
+    #     self.log = "测试结束(中断)"
+    #     self.count = 0
+    #     return
 
 
 test = ClsTest()
