@@ -5,6 +5,6 @@ pip install sqlalchemy -i  https://mirrors.aliyun.com/pypi/simple/
 pip install wtforms -i  https://mirrors.aliyun.com/pypi/simple/
 pip install flask_wtf -i  https://mirrors.aliyun.com/pypi/simple/
 pip install openpyxl -i  https://mirrors.aliyun.com/pypi/simple/
-pip install pycryptodome -i
+pip install pycryptodome -i=
 pip install xlsxwriter -i  https://mirrors.aliyun.com/pypi/simple/
-
+pip install matplotlib -i  https://mirrors.aliyun.com/pypi/simple/
