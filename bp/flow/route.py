@@ -13,6 +13,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common import TimeoutException
+from datetime import datetime, timedelta
+import time
 
 bp = Blueprint('flow', __name__, url_prefix='/flow')
 
@@ -86,6 +88,15 @@ class ClsTest():
         self.log = "测试结束(等待超时，网页加载异常)"
         return
       self.log = "测试结束(完成)"
+      bt_begin = driver.find_element(By.ID,'button-1051-btnInnerEl')
+      if bt_begin.text != "开始":
+        self.log = "测试结束(开始按钮未识别！！！)"
+        return
+      time_begin=datetime.now()-timedelta(seconds=30)
+      bt_begin.click()
+      while bt_begin.text != "开始":
+        self.log = f"等待测试完成"
+        time.sleep(1)
     except Exception as e:
       self.log = f"测试结束(异常退出)"
     finally:
