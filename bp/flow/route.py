@@ -90,10 +90,14 @@ class ClsTest():
       self.log = "测试结束(完成)"
       bt_begin = driver.find_element(By.ID,'button-1051-btnInnerEl')
       if bt_begin.text != "开始":
+        self.log = f"{url}测试被占用"
+        return
+      if bt_begin.text != "开始":
         self.log = "测试结束(开始按钮未识别！！！)"
         return
       time_begin=datetime.now()-timedelta(seconds=30)
       bt_begin.click()
+      time.sleep(2)
       while bt_begin.text != "开始":
         self.log = f"等待测试完成"
         time.sleep(1)
