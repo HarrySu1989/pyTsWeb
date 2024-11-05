@@ -96,7 +96,7 @@ class Data:
     def get_dt_month(self, i_year,i_month):
         dict_date = {}
         for i in range(calendar.monthrange(i_year, i_month)[1] + 1)[1:]:
-            date = f"{str(i_year)}-{str("%02d" % i_month)}-{str("%02d" % i)}"
+            date = f"""{str(i_year)}-{str("%02d" % i_month)}-{str("%02d" % i)}"""
             day_begin = datetime.strptime(date, "%Y-%m-%d")
             day_end = day_begin + timedelta(days=1)
             dict_date[f"{i_month}.{i}"] = [day_begin, day_end]
@@ -145,7 +145,7 @@ class Data:
         return df
 
     def get_df(self, list_str_where):
-        s0 = f'select * from {self.sql_a} where {' and '.join(list_str_where)}'
+        s0 = f"""select * from {self.sql_a} where {' and '.join(list_str_where)}"""
         print(s0)
         return Sql.get_table(s0)
 

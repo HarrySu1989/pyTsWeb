@@ -134,8 +134,8 @@ class ItemSelect(uc.ItemOption):
             i_year = int(self.list_child[0].value.replace("年", ""))
             day_begin = datetime(i_year,1,1)
             day_end = datetime(i_year+1,1,1)
-        s_begin = f"{str(day_begin.year)}-{str("%02d" % day_begin.month)}-{str("%02d" % day_begin.day)}"
-        s_end = f"{str(day_end.year)}-{str("%02d" % day_end.month)}-{str("%02d" % day_end.day)}"
+        s_begin = f"""{str(day_begin.year)}-{str("%02d" % day_begin.month)}-{str("%02d" % day_begin.day)}"""
+        s_end = f"""{str(day_end.year)}-{str("%02d" % day_end.month)}-{str("%02d" % day_end.day)}"""
         list_str_where.append(f"OnDate>='{s_begin}'")
         list_str_where.append(f"OnDate<'{s_end}'")
 
@@ -167,7 +167,7 @@ def download():
 @bp.route('/')
 def index():
     guide=Guide()
-    html_end=f'<a href="{url_for('station.download',q=guide.s_q)}" >下载</a>'
+    html_end=f"""<a href="{url_for('station.download',q=guide.s_q)}" >下载</a>"""
     html=guide.get_html(html_end)
     html+=guide.item_select.get_html_body()
 

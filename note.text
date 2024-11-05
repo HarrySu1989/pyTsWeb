@@ -1,0 +1,10 @@
+pip install pandas -i  https://mirrors.aliyun.com/pypi/simple/
+pip install flask -i  https://mirrors.aliyun.com/pypi/simple/
+pip install pyodbc -i  https://mirrors.aliyun.com/pypi/simple/
+pip install sqlalchemy -i  https://mirrors.aliyun.com/pypi/simple/
+pip install wtforms -i  https://mirrors.aliyun.com/pypi/simple/
+pip install flask_wtf -i  https://mirrors.aliyun.com/pypi/simple/
+pip install openpyxl -i  https://mirrors.aliyun.com/pypi/simple/
+pip install pycryptodome -i
+pip install xlsxwriter -i  https://mirrors.aliyun.com/pypi/simple/
+
