@@ -1,22 +1,25 @@
 from flask import Blueprint, render_template
 from decorators import login_required
 import glb.ViewBase as vb
+import glb.uc as uc
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
+
 bp = Blueprint('flow', __name__, url_prefix='/flow')
+
+
 @bp.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
-    # guide=Guide()
-    # html=guide.get_html()
-    # html+=guide.item_gx.get_html_body()
-    # return vb.get_view(bp, html)
-    chrome_options = Options()
-    chrome_options.add_argument("--window-size=1200,1000")
-    service = Service('./bp/flow/chromedriver-130.0.6723.91.exe')
-    driver = webdriver.Chrome(options=chrome_options, service=service)
-    driver.get("https://www.baidu.com")
+# <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  <!-- 引入jQuery库 -->
+  html = """
+  <label for="example-textbox">工单:</label>
+  <input type="text" id="example-textbox" name="example-textbox">
+  <button id="update-button">开始测试</button>
+  <script src="/static/jquery-3.6.0.min.js"></script>
+  <script src="/static/flow.js"></script>
 
-    return vb.get_view(bp, "hello world")
+"""
+  return vb.get_view(bp, html)
