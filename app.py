@@ -3,6 +3,7 @@ from bp.purchase.route import bp as bp_purchase
 from bp.bom.route import bp as bp_bom
 from bp.auth.auth import bp as bp_auth
 from bp.station.route import bp as bp_station
+from bp.flow.route import bp as bp_flow
 import glb.ViewBase as vb
 import logging
 app = Flask(__name__)
@@ -10,6 +11,7 @@ app.secret_key = 'mysecretkey'
 vb.set_add(app,"工序", bp_station)
 vb.set_add(app,"采购单", bp_purchase)
 vb.set_add(app,"BOM", bp_bom)
+vb.set_add(app,"流量仪", bp_flow)
 app.register_blueprint(bp_auth)
 #
 # # before_request/ before_first_request/ after_request
