@@ -267,16 +267,12 @@ def open():
   print(project_root)
   url = f"{project_root}/LyApp.mhtml"
   test.driver.get(url)
-
+  time.sleep(1)
+  time_a = datetime.now()
+  time_a = datetime.strptime(f"2024-11-04 17:00:12", "%Y-%m-%d %H:%M:%S")
+  test.element_df(time_a)
   return vb.get_view(bp, "open")
 
-# http://192.168.8.146:5000/flow/test/get_table
-@bp.route('/test/get_table')
-def get_table():
-  time = datetime.now()
-  time = datetime.strptime(f"2024-11-04 17:00:12", "%Y-%m-%d %H:%M:%S")
-  test.element_df(time)
-  return vb.get_view(bp, "get_table")
 @bp.route('/update', methods=['POST'])
 def update():
   data = request.json  # 获取Ajax请求发送的JSON数据
