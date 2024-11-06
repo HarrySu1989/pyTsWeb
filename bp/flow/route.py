@@ -71,9 +71,10 @@ class ClsTest():
       tab_log = self.driver.find_element(By.ID, 'tab-1379-btnInnerEl')
       tab_log.click()
       time.sleep(2)
+      return True
     except:
       self.log = "测试结束(无法找到日志页面)"
-      return
+      return False
   def thred_run(self):
     chrome_options = Options()
     chrome_options.add_argument("--window-size=1200,1000")
