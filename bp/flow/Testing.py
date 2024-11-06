@@ -26,7 +26,7 @@ class Testing():
     self.bt_begin = None
     self.time_begin = None
 
-
+#string url = @"http://192.168.124.55:5000/flow/?q=10.77.77.108,123345,harry,1";
   def get_url(self):
     return f"""http://{self.dict_value["flow_input_ip"]}/"""
 
