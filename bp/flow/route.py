@@ -29,13 +29,45 @@ def index():
   #
   # current_directory = os.path.dirname(os.path.realpath(__file__))
   # print(current_directory)
+  s_style = """
+          <style>
+          html,
+  body {
+    height: 100%;
+  }
 
+  .form-signin {
+    max-width: 330px;
+    padding: 1rem;
+  }
+
+  .form-signin .form-floating:focus-within {
+    z-index: 2;
+  }
+
+  .form-signin input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+          </style>
+          """
   html = f"""
+  {s_style}
   <section class="py-5 text-center container">
 
   <div ><h1 id="div-flow-status">{test.log}</h1></div>
 
   </section>
+  
+  <main class="form-signin w-100 m-auto">
 			<div class="form-floating">
 				<input  name="username" type="username" class="form-control" id="floatingInput">
 				<label for="floatingInput">IP</label>
@@ -47,6 +79,7 @@ def index():
 
 		
     <button id="button-flow-begin" class="btn btn-secondary w-100 py-2">开始</button>
+	</main>
 
   <script src="/static/jquery-3.6.0.min.js"></script>
   <script src="/static/flow.js"></script>
