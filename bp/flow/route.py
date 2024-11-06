@@ -75,6 +75,52 @@ class ClsTest():
     except:
       self.log = "测试结束(无法找到日志页面)"
       return False
+  def element_df(self,time_begin):
+    list_dic = []
+    try:
+      # table = self.chrome.get_element_id('ext-element-45')
+      table = self.driver.find_element(By.CSS_SELECTOR,
+                                       '[style*="width: 2372px; transform: translate3d(0px, 0px, 0px);"]')
+      # aa=table.find_elements(By.TAG_NAME,'table')
+      element_s_row = table.find_elements(By.CSS_SELECTOR, '.x-grid-item.x-grid-row-collapsed')
+      for element_row in element_s_row:
+        element_class = element_row.get_attribute('id')
+        # ******************************************************************************************************************
+        list_name = ["端口", "Peer", "端口速率", "端口限速", "模块速率", "模块厂商", "开始时间", "测试时长", "测试类型",
+                     "测试结果", "丢包数", "丢包率", "Link闪烁"]
+        # print(f"{element_class}***********************************************************")
+        if element_class == "tableview-1360-record-738":
+          pass
+        td = element_row.find_elements(By.TAG_NAME, 'td')
+        dic_a = {}
+        for i in range(2, 15):
+          s_name = list_name[i - 2]
+          s_value = td[i].text
+          if s_name == "开始时间":
+            dic_a[s_name] = datetime.strptime(s_value, "%Y-%m-%d %H:%M:%S")
+          elif s_name == "测试结果":
+            dic_a[s_name] = True if s_value == "P" else False
+          else:
+            dic_a[s_name] = s_value
+        if dic_a["开始时间"] < time_begin:
+          return
+        bb = element_row.find_element(By.TAG_NAME, 'table')
+        trs = bb.find_elements(By.TAG_NAME, 'tr')
+        for tr in trs:
+          tds = tr.find_elements(By.TAG_NAME, 'td')
+          if len(tds) != 2:
+            continue
+          s_key = tds[0].find_element(By.TAG_NAME, 'b').get_attribute("innerHTML").replace("：", "").strip()
+          dic_a[s_key] = tds[1].get_attribute("innerHTML").strip()
+        self.log = element_class
+        list_dic.append(dic_a)
+    except Exception as e:
+      self.log = "测试结束(获取测试数据异常)"
+    finally:
+        df = pd.get_df(list_dic)
+        print(df)
+
+
   def thred_run(self):
     chrome_options = Options()
     chrome_options.add_argument("--window-size=1200,1000")
@@ -122,47 +168,7 @@ class ClsTest():
       # <span id="tab-1379-btnInnerEl" data-ref="btnInnerEl" unselectable="on" class="x-tab-inner x-tab-inner-default">日志</span>
       if not self.element_page():
         return
-
-
-      list_dic = []
-      # table = self.chrome.get_element_id('ext-element-45')
-      table = self.driver.find_element(By.CSS_SELECTOR,
-                                              '[style*="width: 2372px; transform: translate3d(0px, 0px, 0px);"]')
-      # aa=table.find_elements(By.TAG_NAME,'table')
-      element_s_row = table.find_elements(By.CSS_SELECTOR, '.x-grid-item.x-grid-row-collapsed')
-      for element_row in element_s_row:
-        element_class = element_row.get_attribute('id')
-        # ******************************************************************************************************************
-        list_name = ["端口", "Peer", "端口速率", "端口限速", "模块速率", "模块厂商", "开始时间", "测试时长", "测试类型",
-                     "测试结果", "丢包数", "丢包率", "Link闪烁"]
-        # print(f"{element_class}***********************************************************")
-        if element_class == "tableview-1360-record-738":
-          pass
-        td = element_row.find_elements(By.TAG_NAME, 'td')
-        dic_a = {}
-        for i in range(2, 15):
-          s_name = list_name[i - 2]
-          s_value = td[i].text
-          if s_name == "开始时间":
-            dic_a[s_name] = datetime.strptime(s_value, "%Y-%m-%d %H:%M:%S")
-          elif s_name == "测试结果":
-            dic_a[s_name] = True if s_value == "P" else False
-          else:
-            dic_a[s_name] = s_value
-        if dic_a["开始时间"] < time_begin:
-          return
-        bb = element_row.find_element(By.TAG_NAME, 'table')
-        trs = bb.find_elements(By.TAG_NAME, 'tr')
-        for tr in trs:
-          tds = tr.find_elements(By.TAG_NAME, 'td')
-          if len(tds) != 2:
-            continue
-          s_key = tds[0].find_element(By.TAG_NAME, 'b').get_attribute("innerHTML").replace("：", "").strip()
-          dic_a[s_key] = tds[1].get_attribute("innerHTML").strip()
-        self.log =element_class
-        list_dic.append(dic_a)
-        df=pd.get_df(list_dic)
-        print(df)
+      self.element_df(time_begin)
       self.log = "测试结束(完成)"
     except Exception as e:
       print(e)
