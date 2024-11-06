@@ -48,6 +48,7 @@ class ClsTest():
     self.count = 0
     self.sq_end=False
     self.log = "请录入工单，点击开始测试"
+    self.driver = None
 
   def get_value(self, req):
     if self.t and self.t.is_alive():
@@ -65,22 +66,30 @@ class ClsTest():
       self.count = 0
     return self.log
 
+  def element_page(self):
+    try:
+      tab_log = self.driver.find_element(By.ID, 'tab-1379-btnInnerEl')
+      tab_log.click()
+      time.sleep(2)
+    except:
+      self.log = "测试结束(无法找到日志页面)"
+      return
   def thred_run(self):
     chrome_options = Options()
     chrome_options.add_argument("--window-size=1200,1000")
     service = Service('./bp/flow/chromedriver-130.0.6723.91.exe')
-    driver = webdriver.Chrome(options=chrome_options, service=service)
+    self.driver = webdriver.Chrome(options=chrome_options, service=service)
     try:
       url = 'http://10.77.77.108/'
       self.log = f"正在加载URL：{url}"
       try:
-        driver.get(url)
+        self.driver.get(url)
       except:
         self.log = f"测试结束(无法加载URL：{url})"
         return
       b_load = True
       try:
-        element = WebDriverWait(driver, 5).until(
+        element = WebDriverWait(self.driver, 5).until(
           EC.visibility_of_element_located((By.ID, 'button-1051-btnInnerEl'))
         )
       except TimeoutException:
@@ -89,7 +98,7 @@ class ClsTest():
         self.log = "测试结束(等待超时，网页加载异常)"
         return
 
-      bt_begin = driver.find_element(By.ID,'button-1051-btnInnerEl')
+      bt_begin = self.driver.find_element(By.ID,'button-1051-btnInnerEl')
       if bt_begin.text != "开始":
         self.log = f"{url}测试被占用"
         return
@@ -100,7 +109,7 @@ class ClsTest():
       bt_begin.click()
       time.sleep(2)
       while bt_begin.text != "开始":
-        text_time = driver.find_element(By.ID,'component-1084')
+        text_time = self.driver.find_element(By.ID,'component-1084')
         self.log = f"等待测试完成({text_time.text})"
 
         time.sleep(1)
@@ -109,9 +118,14 @@ class ClsTest():
           self.log = "测试结束(中断)"
           self.sq_end=False
           return
+      # <span id="tab-1379-btnInnerEl" data-ref="btnInnerEl" unselectable="on" class="x-tab-inner x-tab-inner-default">日志</span>
+      if not self.element_page():
+        return
+
+
       list_dic = []
       # table = self.chrome.get_element_id('ext-element-45')
-      table = driver.find_element(By.CSS_SELECTOR,
+      table = self.driver.find_element(By.CSS_SELECTOR,
                                               '[style*="width: 2372px; transform: translate3d(0px, 0px, 0px);"]')
       # aa=table.find_elements(By.TAG_NAME,'table')
       element_s_row = table.find_elements(By.CSS_SELECTOR, '.x-grid-item.x-grid-row-collapsed')
@@ -153,7 +167,7 @@ class ClsTest():
       print(e)
       self.log = f"测试结束(异常退出)"
     finally:
-        driver.quit()
+        self.driver.quit()
 
 
 
