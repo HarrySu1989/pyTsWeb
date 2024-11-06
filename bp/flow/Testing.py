@@ -25,6 +25,7 @@ class Testing():
     self.url = 'http://10.77.77.108/'
     self.bt_begin = None
     self.time_begin = None
+    self.user=None
 
   def get_value(self, req):
     if self.t and self.t.is_alive():
@@ -35,6 +36,7 @@ class Testing():
         return "结束申请"
       return f"{self.log}"
     if req == 0:
+      self.user = session.get("user_id")
       self.t = threading.Thread(target=self.thread_run)
       self.t.start()
       self.sq_end = False
@@ -172,8 +174,7 @@ class Testing():
       if not self.element_wait(): return
       if not self.element_page(): return
       df=self.element_df(self.time_begin)
-      user = session.get("user_id")
-      sql.set_insert(df, user)
+      sql.set_insert(df, self.user)
       self.log = "测试结束(完成)"
     except Exception as e:
       print(e)
