@@ -12,8 +12,19 @@ bp = Blueprint('flow', __name__, url_prefix='/flow')
 
 
 @bp.route('/', methods=['GET', 'POST'])
-@login_required
 def index():
+  q = request.args.get('q')
+  s_ip=""
+  s_order=""
+  s_user=""
+  s_sec="1"
+  if q:
+    buf=q.split(',')
+    s_ip=buf[0]
+    s_order=buf[1]
+    s_user=buf[2]
+    s_sec=buf[3]
+    print(s_ip)
   # <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  <!-- 引入jQuery库 -->
   #
   # current_directory = os.path.dirname(os.path.realpath(__file__))
@@ -52,17 +63,25 @@ def index():
   {s_style}
   <section class="py-5 text-center container">
 
-  <div ><h1 id="div-flow-status">{test.log}</h1></div>
+  <div ><h1 id="s_flow_log">{test.s_flow_log}</h1></div>
 
   </section>
   <main class="form-signin w-100 m-auto">
 			<div class="form-floating">
-				<input  name="username" type="username" class="form-control" id="floatingInput">
+				<input  name="username" type="username" class="form-control" id="flow_input_ip" value="{s_ip}">
 				<label for="floatingInput">IP</label>
 			</div>
 			<div class="form-floating">
-				<input  name="username" type="username" class="form-control" id="floatingInput" value="test">
+				<input  name="username" type="username" class="form-control" id="flow_input_order" value="{s_order}">
 				<label for="floatingInput">工单</label>
+			</div>
+			<div class="form-floating">
+				<input  name="username" type="username" class="form-control" id="flow_input_operator" value="{s_user}" readonly>
+				<label for="floatingInput">测试员</label>
+			</div>
+			<div class="form-floating">
+				<input  name="username" type="username" class="form-control" id="flow_input_sec" value="{s_sec}">
+				<label for="floatingInput">测试时间（分钟）</label>
 			</div>
     <button id="button-flow-begin" class="btn btn-secondary w-100 py-2">开始</button>
 	</main>
@@ -96,9 +115,9 @@ def open():
 @bp.route('/update', methods=['POST'])
 def update():
   data = request.json  # 获取Ajax请求发送的JSON数据
-  req = data.get('count')
+  s_flow_values = data.get('s_flow_values')
   # response = {'message': 'Success', 'new_content': '这是更新后的内容'}  # 模拟处理并返回新内容
   global test
-  response = {'message': 'Error1', 'new_content': f'{test.get_value(req)}'}  # 模拟处理并返回新内容
+  response = {'message': 'Error1', 'new_content': f'{test.get_value(s_flow_values)}'}  # 模拟处理并返回新内容
 
   return jsonify(response)  # 将响应数据封装为JSON格式返回

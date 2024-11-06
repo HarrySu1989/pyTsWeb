@@ -17,58 +17,70 @@ import bp.flow.sql as sql
 
 class Testing():
   def __init__(self):
+    self.dict_value={}
     self.t = None
     self.count = 0
     self.sq_end = False
-    self.log = "请录入工单，点击开始测试"
+    self.s_flow_log = "请录入工单，点击开始测试"
     self.driver = None
-    self.url = 'http://10.77.77.108/'
     self.bt_begin = None
     self.time_begin = None
-    self.user=None
 
-  def get_value(self, req):
+
+  def get_url(self):
+    return f"""http://{self.dict_value["flow_input_ip"]}/"""
+
+  @property
+  def user(self):
+    return self.dict_value["flow_input_operator"]
+
+  def get_value(self, s_flow_values:str):
     if self.t and self.t.is_alive():
-      if req == 0:
+      if s_flow_values.startswith("开始申请"):
         return "当前流量仪正在测试"
-      elif req == -1:
+      elif s_flow_values == "结束申请":
         self.sq_end = True
         return "结束申请"
-      return f"{self.log}"
-    if req == 0:
-      self.user = session.get("user_id")
+      return f"{self.s_flow_log}"
+    if s_flow_values.startswith("开始申请"):
+      buf=s_flow_values.split(",")
+      self.dict_value["flow_input_ip"]=buf[1].strip()
+      self.dict_value["flow_input_order"]=buf[2].strip()
+      self.dict_value["flow_input_operator"]=buf[3].strip()
+      self.dict_value["flow_input_sec"]=buf[4].strip()
+      print(self.dict_value)
       self.t = threading.Thread(target=self.thread_run)
       self.t.start()
       self.sq_end = False
       self.count = 0
-    return self.log
+    return self.s_flow_log
 
   def element_driver(self):
     try:
-      self.log = "正在加载chromedriver"
+      self.s_flow_log = "正在加载chromedriver"
       chrome_options = Options()
       chrome_options.add_argument("--window-size=1200,1000")
       service = Service('./bp/flow/chromedriver-130.0.6723.91.exe')
       self.driver = webdriver.Chrome(options=chrome_options, service=service)
       return True
     except Exception as e:
-      self.log = "测试结束(加载chromedriver异常)"
+      self.s_flow_log = "测试结束(加载chromedriver异常)"
       return False
 
   def element_url(self,url=None):
-    if not url:url=self.url
-    self.log = f"正在加载URL：{url}"
+    if not url:url=self.get_url()
+    self.s_flow_log = f"正在加载URL：{url}"
     try:
       self.driver.get(url)
     except:
-      self.log = f"测试结束(无法加载URL：{url})"
+      self.s_flow_log = f"测试结束(无法加载URL：{url})"
       return False
     try:
       element = WebDriverWait(self.driver, 5).until(
         EC.visibility_of_element_located((By.ID, 'button-1051-btnInnerEl'))
       )
     except TimeoutException:
-      self.log = "测试结束(等待超时，网页加载异常)"
+      self.s_flow_log = "测试结束(等待超时，网页加载异常)"
       return False
     return True
 
@@ -78,18 +90,18 @@ class Testing():
         self.bt_begin = self.driver.find_element(By.ID, 'button-1051-btnInnerEl')
         break
     except:
-      self.log = "测试结束(获取开始按钮异常！！！)"
+      self.s_flow_log = "测试结束(获取开始按钮异常！！！)"
       return False
     if self.bt_begin.text != "开始":
-      self.log = f"测试结束({self.url}测试被占用)"
+      self.s_flow_log = f"测试结束({self.get_url()}测试被占用)"
       return False
     if self.bt_begin.text != "开始":
-      self.log = "测试结束(开始按钮未识别！！！)"
+      self.s_flow_log = "测试结束(开始按钮未识别！！！)"
       return False
     self.time_begin = datetime.now() - timedelta(seconds=30)
     self.bt_begin.click()
     for i in range(3):
-      self.log = f"测试按钮按下延时({i})"
+      self.s_flow_log = f"测试按钮按下延时({i})"
       time.sleep(1)
     return True
 
@@ -97,16 +109,16 @@ class Testing():
     try:
       while self.bt_begin.text != "开始":
         text_time = self.driver.find_element(By.ID, 'component-1084')
-        self.log = f"等待测试完成({text_time.text})"
+        self.s_flow_log = f"等待测试完成({text_time.text})"
         time.sleep(1)
         if self.sq_end:
           self.bt_begin.click()
-          self.log = "测试结束(中断)"
+          self.s_flow_log = "测试结束(中断)"
           self.sq_end = False
           return False
       return True
     except:
-      self.log = "测试结束(测试状态监控异常)"
+      self.s_flow_log = "测试结束(测试状态监控异常)"
       return False
 
   def element_page(self):
@@ -116,7 +128,7 @@ class Testing():
       time.sleep(2)
       return True
     except:
-      self.log = "测试结束(无法找到日志页面)"
+      self.s_flow_log = "测试结束(无法找到日志页面)"
       return False
 
   def element_df(self, time_begin):
@@ -158,10 +170,10 @@ class Testing():
           if s_key =="序列号":
             s_key = "FSN"
           dic_a[s_key] = tds[1].get_attribute("innerHTML").strip()
-        self.log = element_class
+        self.s_flow_log = element_class
         list_dic.append(dic_a)
     except Exception as e:
-      self.log = "测试结束(获取测试数据异常)"
+      self.s_flow_log = "测试结束(获取测试数据异常)"
     finally:
       df = pd.get_df(list_dic)
       return df
@@ -175,10 +187,10 @@ class Testing():
       if not self.element_page(): return
       df=self.element_df(self.time_begin)
       sql.set_insert(df, self.user)
-      self.log = "测试结束(完成)"
+      self.s_flow_log = "测试结束(完成)"
     except Exception as e:
       print(e)
-      self.log = f"测试结束(异常退出)"
+      self.s_flow_log = f"测试结束(异常退出)"
     finally:
       self.driver.quit()
 
