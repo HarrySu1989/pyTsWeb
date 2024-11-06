@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, url_for
 from sqlalchemy import false
 
 from decorators import login_required
@@ -66,7 +66,6 @@ def index():
   <div ><h1 id="div-flow-status">{test.log}</h1></div>
 
   </section>
-  
   <main class="form-signin w-100 m-auto">
 			<div class="form-floating">
 				<input  name="username" type="username" class="form-control" id="floatingInput">
@@ -76,16 +75,14 @@ def index():
 				<input  name="username" type="username" class="form-control" id="floatingInput">
 				<label for="floatingInput">工单</label>
 			</div>
-
-		
     <button id="button-flow-begin" class="btn btn-secondary w-100 py-2">开始</button>
 	</main>
-
   <script src="/static/jquery-3.6.0.min.js"></script>
   <script src="/static/flow.js"></script>
 """
-  return vb.get_view(bp, html)
 
+  # <a href="{url_for('flow.test1')}”>测试1</a>
+  return vb.get_view(bp, html)
 
 class ClsTest():
   def __init__(self):
@@ -125,12 +122,13 @@ class ClsTest():
       self.log = "测试结束(加载chromedriver异常)"
       return False
 
-  def element_url(self):
-    self.log = f"正在加载URL：{self.url}"
+  def element_url(self,url=None):
+    if not url:url=self.url
+    self.log = f"正在加载URL：{url}"
     try:
-      self.driver.get(self.url)
+      self.driver.get(url)
     except:
-      self.log = f"测试结束(无法加载URL：{self.url})"
+      self.log = f"测试结束(无法加载URL：{url})"
       return False
     try:
       element = WebDriverWait(self.driver, 5).until(
@@ -259,10 +257,26 @@ class ClsTest():
     #     self.count = 0
     #     return
 
-
 test = ClsTest()
+# http://192.168.8.146:5000/flow/test/open
+@bp.route('/test/open')
+def open():
+  if not test.element_driver():return
+  # project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+  project_root = os.path.join(os.path.dirname(__file__))
+  print(project_root)
+  url = f"{project_root}/LyApp.mhtml"
+  test.driver.get(url)
 
+  return vb.get_view(bp, "open")
 
+# http://192.168.8.146:5000/flow/test/get_table
+@bp.route('/test/get_table')
+def get_table():
+  time = datetime.now()
+  time = datetime.strptime(f"2024-11-04 17:00:12", "%Y-%m-%d %H:%M:%S")
+  test.element_df(time)
+  return vb.get_view(bp, "get_table")
 @bp.route('/update', methods=['POST'])
 def update():
   data = request.json  # 获取Ajax请求发送的JSON数据
