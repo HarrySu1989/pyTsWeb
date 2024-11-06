@@ -34,16 +34,20 @@ def index():
   <section class="py-5 text-center container">
 
   <div ><h1 id="div-flow-status">{test.log}</h1></div>
-  <p></p>
-  <div>
-    <label for="example-textbox">工单:</label>
-    <input type="text" id="example-textbox" name="example-textbox">
-  </div>
-  <p></p>
-  <div>
-    <button id="button-flow-begin" class="btn btn-primary my-2">开始</button>
-  </div>
+
   </section>
+			<div class="form-floating">
+				<input  name="username" type="username" class="form-control" id="floatingInput">
+				<label for="floatingInput">IP</label>
+			</div>
+			<div class="form-floating">
+				<input  name="username" type="username" class="form-control" id="floatingInput">
+				<label for="floatingInput">工单</label>
+			</div>
+
+		
+    <button id="button-flow-begin" class="btn btn-secondary w-100 py-2">开始</button>
+
   <script src="/static/jquery-3.6.0.min.js"></script>
   <script src="/static/flow.js"></script>
 """
