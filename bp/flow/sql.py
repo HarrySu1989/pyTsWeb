@@ -22,11 +22,11 @@ def set_insert(df,user):
     for key, value in dict_row.items():
       if key in list_clm:
         dick_a[f"[{key}]"]=f"'{value}'"
-    print(type(row))
-    print(dict_row)
+    fsn=dick_a["[FSN]"]
+    dick_a["[OrCode]"]=fsn
+    Sql.set_insert(f"""UPDATE {table} SET bNewest='False' where FSN={fsn} """)
+    dick_a[f"[FsnCount]"]= str(Sql.get_int(f"""SELECT count(id) FROM {table} WHERE FSN = {fsn}"""))
     s_clm_name = ",".join(dick_a.keys())
     s_clm_value = ",".join(dick_a.values())
-    fsn=dick_a["[FSN]"]
-    Sql.set_insert(f"""UPDATE {table} SET bNewest='False' where FSN={fsn} """)
-    b_ok=Sql.set_insert(f"""INSERT INTO {table} ({s_clm_name}) values ({s_clm_value})""")
-    print(f"插入数据状态：{b_ok}")
+    Sql.set_insert(f"""INSERT INTO {table} ({s_clm_name}) values ({s_clm_value})""")
+
