@@ -25,21 +25,27 @@ bp = Blueprint('flow', __name__, url_prefix='/flow')
 @bp.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
-# <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  <!-- 引入jQuery库 -->
-#
+  # <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  <!-- 引入jQuery库 -->
+  #
   # current_directory = os.path.dirname(os.path.realpath(__file__))
   # print(current_directory)
 
   html = f"""
-  <div ><h3 id="div-flow-status">{test.log}</h3></div>
+  <section class="py-5 text-center container">
+
+  <div ><h1 id="div-flow-status">{test.log}</h1></div>
+  <p></p>
   <div>
     <label for="example-textbox">工单:</label>
     <input type="text" id="example-textbox" name="example-textbox">
-    <button id="button-flow-begin">开始</button>
-    <script src="/static/jquery-3.6.0.min.js"></script>
-    <script src="/static/flow.js"></script>
   </div>
- 
+  <p></p>
+  <div>
+    <button id="button-flow-begin" class="btn btn-primary my-2">开始</button>
+  </div>
+  </section>
+  <script src="/static/jquery-3.6.0.min.js"></script>
+  <script src="/static/flow.js"></script>
 """
   return vb.get_view(bp, html)
 
@@ -48,26 +54,28 @@ class ClsTest():
   def __init__(self):
     self.t = None
     self.count = 0
-    self.sq_end=False
+    self.sq_end = False
     self.log = "请录入工单，点击开始测试"
     self.driver = None
     self.url = 'http://10.77.77.108/'
-    self.bt_begin=None
-    self.time_begin=None
+    self.bt_begin = None
+    self.time_begin = None
+
   def get_value(self, req):
     if self.t and self.t.is_alive():
-      if req==0:
+      if req == 0:
         return "当前流量仪正在测试"
-      elif req==-1:
-        self.sq_end=True
+      elif req == -1:
+        self.sq_end = True
         return "结束申请"
       return f"{self.log}"
-    if req==0:
+    if req == 0:
       self.t = threading.Thread(target=self.thread_run)
       self.t.start()
-      self.sq_end=False
+      self.sq_end = False
       self.count = 0
     return self.log
+
   def element_driver(self):
     try:
       self.log = "正在加载chromedriver"
@@ -79,6 +87,7 @@ class ClsTest():
     except Exception as e:
       self.log = "测试结束(加载chromedriver异常)"
       return False
+
   def element_url(self):
     self.log = f"正在加载URL：{self.url}"
     try:
@@ -94,6 +103,7 @@ class ClsTest():
       self.log = "测试结束(等待超时，网页加载异常)"
       return False
     return True
+
   def element_begin(self):
     try:
       for i in range(3):
@@ -111,9 +121,10 @@ class ClsTest():
     self.time_begin = datetime.now() - timedelta(seconds=30)
     self.bt_begin.click()
     for i in range(3):
-      self.log =f"测试按钮按下延时({i})"
+      self.log = f"测试按钮按下延时({i})"
       time.sleep(1)
     return True
+
   def element_wait(self):
     try:
       while self.bt_begin.text != "开始":
@@ -127,8 +138,8 @@ class ClsTest():
           return False
       return True
     except:
-        self.log = "测试结束(测试状态监控异常)"
-        return False
+      self.log = "测试结束(测试状态监控异常)"
+      return False
 
   def element_page(self):
     try:
@@ -139,7 +150,8 @@ class ClsTest():
     except:
       self.log = "测试结束(无法找到日志页面)"
       return False
-  def element_df(self,time_begin):
+
+  def element_df(self, time_begin):
     list_dic = []
     try:
       # table = self.chrome.get_element_id('ext-element-45')
@@ -181,25 +193,23 @@ class ClsTest():
     except Exception as e:
       self.log = "测试结束(获取测试数据异常)"
     finally:
-        df = pd.get_df(list_dic)
-        print(df)
+      df = pd.get_df(list_dic)
+      print(df)
 
   def thread_run(self):
     try:
-      if not self.element_driver():return
-      if not self.element_url():return
-      if not self.element_begin():return
-      if not self.element_wait():return
-      if not self.element_page():return
+      if not self.element_driver(): return
+      if not self.element_url(): return
+      if not self.element_begin(): return
+      if not self.element_wait(): return
+      if not self.element_page(): return
       self.element_df(self.time_begin)
       self.log = "测试结束(完成)"
     except Exception as e:
       print(e)
       self.log = f"测试结束(异常退出)"
     finally:
-        self.driver.quit()
-
-
+      self.driver.quit()
 
     # while True:
     #   self.count += 1
