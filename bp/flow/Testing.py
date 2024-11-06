@@ -3,7 +3,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common import TimeoutException
-
+from flask import session
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -13,6 +13,7 @@ import threading
 from time import sleep
 import glb.uc as uc
 import uc.uc_pd as pd
+import bp.flow.sql as sql
 
 class Testing():
   def __init__(self):
@@ -170,7 +171,9 @@ class Testing():
       if not self.element_begin(): return
       if not self.element_wait(): return
       if not self.element_page(): return
-      self.element_df(self.time_begin)
+      df=self.element_df(self.time_begin)
+      user = session.get("user_id")
+      sql.set_insert(df, user)
       self.log = "测试结束(完成)"
     except Exception as e:
       print(e)
