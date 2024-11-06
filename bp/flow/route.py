@@ -150,6 +150,7 @@ class ClsTest():
         print(df)
       self.log = "测试结束(完成)"
     except Exception as e:
+      print(e)
       self.log = f"测试结束(异常退出)"
     finally:
         driver.quit()
