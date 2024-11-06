@@ -65,10 +65,20 @@ class ClsTest():
     if req==0:
       self.t = threading.Thread(target=self.thread_run)
       self.t.start()
-      self.log = "开始"
       self.sq_end=False
       self.count = 0
     return self.log
+  def element_driver(self):
+    try:
+      self.log = "正在加载chromedriver"
+      chrome_options = Options()
+      chrome_options.add_argument("--window-size=1200,1000")
+      service = Service('./bp/flow/chromedriver-130.0.6723.91.exe')
+      self.driver = webdriver.Chrome(options=chrome_options, service=service)
+      return True
+    except Exception as e:
+      self.log = "测试结束(加载chromedriver异常)"
+      return False
   def element_url(self):
     self.log = f"正在加载URL：{self.url}"
     try:
@@ -104,6 +114,22 @@ class ClsTest():
       self.log =f"测试按钮按下延时({i})"
       time.sleep(1)
     return True
+  def element_wait(self):
+    try:
+      while self.bt_begin.text != "开始":
+        text_time = self.driver.find_element(By.ID, 'component-1084')
+        self.log = f"等待测试完成({text_time.text})"
+        time.sleep(1)
+        if self.sq_end:
+          self.bt_begin.click()
+          self.log = "测试结束(中断)"
+          self.sq_end = False
+          return False
+      return True
+    except:
+        self.log = "测试结束(测试状态监控异常)"
+        return False
+
   def element_page(self):
     try:
       tab_log = self.driver.find_element(By.ID, 'tab-1379-btnInnerEl')
@@ -159,28 +185,12 @@ class ClsTest():
         print(df)
 
   def thread_run(self):
-    self.log="正在加载chromedriver"
-    chrome_options = Options()
-    chrome_options.add_argument("--window-size=1200,1000")
-    service = Service('./bp/flow/chromedriver-130.0.6723.91.exe')
-    self.driver = webdriver.Chrome(options=chrome_options, service=service)
     try:
+      if not self.element_driver():return
       if not self.element_url():return
       if not self.element_begin():return
-
-      while self.bt_begin.text != "开始":
-        text_time = self.driver.find_element(By.ID,'component-1084')
-        self.log = f"等待测试完成({text_time.text})"
-
-        time.sleep(1)
-        if self.sq_end:
-          self.bt_begin.click()
-          self.log = "测试结束(中断)"
-          self.sq_end=False
-          return
-      # <span id="tab-1379-btnInnerEl" data-ref="btnInnerEl" unselectable="on" class="x-tab-inner x-tab-inner-default">日志</span>
-      if not self.element_page():
-        return
+      if not self.element_wait():return
+      if not self.element_page():return
       self.element_df(self.time_begin)
       self.log = "测试结束(完成)"
     except Exception as e:
