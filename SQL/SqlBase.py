@@ -20,6 +20,21 @@ def get_table(s0) -> pd.DataFrame:
     engine.dispose()
     return df
 
+def set_insert(s0):
+    conn = pyodbc.connect(sConnect)
+    cursor = conn.cursor()
+    try:
+        cursor.execute(s0)
+        # 提交事务（如果没有异常发生，则插入成功）
+        conn.commit()
+        return True
+    except pyodbc.Error as e:
+        print(f"set_insert异常：\n{s0}\n{e}")
+        return False
+    finally:
+        # 关闭游标和连接
+        cursor.close()
+        conn.close()
 def get_rows(s0):
     cn = pyodbc.connect(sConnect)
     # Create a cursor from the connection
