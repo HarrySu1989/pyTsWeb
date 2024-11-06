@@ -1,4 +1,6 @@
 from flask import Blueprint, render_template
+from sqlalchemy import false
+
 from decorators import login_required
 import glb.ViewBase as vb
 import glb.uc as uc
@@ -49,7 +51,9 @@ class ClsTest():
     self.sq_end=False
     self.log = "请录入工单，点击开始测试"
     self.driver = None
-
+    self.url = 'http://10.77.77.108/'
+    self.bt_begin=None
+    self.time_begin=None
   def get_value(self, req):
     if self.t and self.t.is_alive():
       if req==0:
@@ -59,13 +63,47 @@ class ClsTest():
         return "结束申请"
       return f"{self.log}"
     if req==0:
-      self.t = threading.Thread(target=self.thred_run)
+      self.t = threading.Thread(target=self.thread_run)
       self.t.start()
       self.log = "开始"
       self.sq_end=False
       self.count = 0
     return self.log
-
+  def element_url(self):
+    self.log = f"正在加载URL：{self.url}"
+    try:
+      self.driver.get(self.url)
+    except:
+      self.log = f"测试结束(无法加载URL：{self.url})"
+      return False
+    try:
+      element = WebDriverWait(self.driver, 5).until(
+        EC.visibility_of_element_located((By.ID, 'button-1051-btnInnerEl'))
+      )
+    except TimeoutException:
+      self.log = "测试结束(等待超时，网页加载异常)"
+      return False
+    return True
+  def element_begin(self):
+    try:
+      for i in range(3):
+        self.bt_begin = self.driver.find_element(By.ID, 'button-1051-btnInnerEl')
+        break
+    except:
+      self.log = "测试结束(获取开始按钮异常！！！)"
+      return False
+    if self.bt_begin.text != "开始":
+      self.log = f"测试结束({self.url}测试被占用)"
+      return False
+    if self.bt_begin.text != "开始":
+      self.log = "测试结束(开始按钮未识别！！！)"
+      return False
+    self.time_begin = datetime.now() - timedelta(seconds=30)
+    self.bt_begin.click()
+    for i in range(3):
+      self.log =f"测试按钮按下延时({i})"
+      time.sleep(1)
+    return True
   def element_page(self):
     try:
       tab_log = self.driver.find_element(By.ID, 'tab-1379-btnInnerEl')
@@ -120,55 +158,29 @@ class ClsTest():
         df = pd.get_df(list_dic)
         print(df)
 
-
-  def thred_run(self):
+  def thread_run(self):
     chrome_options = Options()
     chrome_options.add_argument("--window-size=1200,1000")
     service = Service('./bp/flow/chromedriver-130.0.6723.91.exe')
     self.driver = webdriver.Chrome(options=chrome_options, service=service)
     try:
-      url = 'http://10.77.77.108/'
-      self.log = f"正在加载URL：{url}"
-      try:
-        self.driver.get(url)
-      except:
-        self.log = f"测试结束(无法加载URL：{url})"
-        return
-      b_load = True
-      try:
-        element = WebDriverWait(self.driver, 5).until(
-          EC.visibility_of_element_located((By.ID, 'button-1051-btnInnerEl'))
-        )
-      except TimeoutException:
-        b_load = False
-      if not b_load:
-        self.log = "测试结束(等待超时，网页加载异常)"
-        return
+      if not self.element_url():return
+      if not self.element_begin():return
 
-      bt_begin = self.driver.find_element(By.ID,'button-1051-btnInnerEl')
-      if bt_begin.text != "开始":
-        self.log = f"{url}测试被占用"
-        return
-      if bt_begin.text != "开始":
-        self.log = "测试结束(开始按钮未识别！！！)"
-        return
-      time_begin=datetime.now()-timedelta(seconds=30)
-      bt_begin.click()
-      time.sleep(2)
-      while bt_begin.text != "开始":
+      while self.bt_begin.text != "开始":
         text_time = self.driver.find_element(By.ID,'component-1084')
         self.log = f"等待测试完成({text_time.text})"
 
         time.sleep(1)
         if self.sq_end:
-          bt_begin.click()
+          self.bt_begin.click()
           self.log = "测试结束(中断)"
           self.sq_end=False
           return
       # <span id="tab-1379-btnInnerEl" data-ref="btnInnerEl" unselectable="on" class="x-tab-inner x-tab-inner-default">日志</span>
       if not self.element_page():
         return
-      self.element_df(time_begin)
+      self.element_df(self.time_begin)
       self.log = "测试结束(完成)"
     except Exception as e:
       print(e)
