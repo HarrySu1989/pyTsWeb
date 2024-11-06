@@ -159,6 +159,7 @@ class ClsTest():
         print(df)
 
   def thread_run(self):
+    self.log="正在加载chromedriver"
     chrome_options = Options()
     chrome_options.add_argument("--window-size=1200,1000")
     service = Service('./bp/flow/chromedriver-130.0.6723.91.exe')
