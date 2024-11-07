@@ -108,8 +108,8 @@ def open():
   df = test.element_df(time_a)
   print(df)
   print(df.columns)
-  user = session.get("user_id")
-  sql.set_insert(df,user)
+  dict_value={"flow_input_operator":"harry","flow_input_order":"20110101001"}
+  sql.set_insert(df,dict_value)
   return vb.get_view(bp, "open")
 
 @bp.route('/update', methods=['POST'])

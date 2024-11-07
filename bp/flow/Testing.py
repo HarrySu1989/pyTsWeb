@@ -192,7 +192,7 @@ class Testing():
       if not self.element_wait(): return
       if not self.element_page(): return
       df=self.element_df(self.time_begin)
-      sql.set_insert(df, self.dict_value["flow_input_operator"])
+      sql.set_insert(df, self.dict_value)
       self.s_flow_log = "测试结束(完成)"
     except Exception as e:
       print(e)
