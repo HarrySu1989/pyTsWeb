@@ -2,6 +2,7 @@ from flask import Blueprint, request, render_template
 import glb.ViewBase as vb
 import SQL.SqlBase as Sql
 import math
+import glb.log as log
 from decorators import login_required
 bp = Blueprint('bom', __name__, url_prefix='/bom')
 
@@ -26,6 +27,7 @@ def GetPage(page):
 @bp.route('/')
 @login_required
 def index():
+    log.add("刷新BOM界面")
     page_size = 50  # 每页的数量
     select_size = 11
     page = GetPage(request.args.get('page'))

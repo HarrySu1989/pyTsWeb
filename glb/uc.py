@@ -1,6 +1,7 @@
 from flask import request, url_for
 import glb.ViewBase as vb
 from typing import List
+import glb.log as log
 import datetime
 class Item:
     def __init__(self):
@@ -95,7 +96,7 @@ class Guide:
 
     def get_html(self,html_end=""):
         s_q = self.s_q
-        print(f"刷新工序界面,条件：{s_q}")
+        log.add(f"刷新工序界面,条件：{s_q}")
         html = ""
         i_offset = 0
         s_menu=""
