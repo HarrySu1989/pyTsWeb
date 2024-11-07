@@ -1,13 +1,8 @@
 from flask import Blueprint, jsonify, request
 import glb.ViewBase
-import os
-from datetime import datetime
-import time
 from .Testing import Testing
-import bp.flow.sql as sql
-
 bp = Blueprint('flow', __name__, url_prefix='/flow')
-
+test_flow_a = Testing()
 
 @bp.route('/', methods=['GET', 'POST'])
 def index():
@@ -61,7 +56,7 @@ def index():
   {s_style}
   <section class="py-5 text-center container">
 
-  <div ><h1 id="s_flow_log">{test.s_flow_log}</h1></div>
+  <div ><h1 id="s_flow_log">{test_flow_a.s_flow_log}</h1></div>
 
   </section>
   <main class="form-signin w-100 m-auto">
@@ -90,24 +85,6 @@ def index():
   # <a href="{url_for('flow.test1')}”>测试1</a>
   return glb.ViewBase.get_view(bp, html)
 
-test = Testing()
-# http://192.168.8.146:5000/flow/test/open
-@bp.route('/test/open')
-def open_test():
-  if not test.element_driver():return
-  # project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-  project_root = os.path.join(os.path.dirname(__file__))
-  print(project_root)
-  url = f"{project_root}/LyApp.mhtml"
-  test.driver.get(url)
-  time.sleep(1)
-  time_a = datetime.strptime(f"2024-11-04 17:00:12", "%Y-%m-%d %H:%M:%S")
-  df = test.element_df(time_a)
-  print(df)
-  print(df.columns)
-  dict_value={"flow_input_operator":"harry","flow_input_order":"20110101001"}
-  sql.set_insert(df,dict_value)
-  return glb.ViewBase.get_view(bp, "open")
 
 @bp.route('/update', methods=['POST'])
 def update():
@@ -115,7 +92,7 @@ def update():
   s_flow_type = data.get('s_flow_type')
   s_flow_values = data.get('s_flow_values')
   # response = {'message': 'Success', 'new_content': '这是更新后的内容'}  # 模拟处理并返回新内容
-  global test
-  response = {'message': 'Error1', 'new_content': f'{test.get_value(s_flow_type,s_flow_values)}'}  # 模拟处理并返回新内容
+  global test_flow_a
+  response = {'message': 'Error1', 'new_content': f'{test_flow_a.get_value(s_flow_type, s_flow_values)}'}  # 模拟处理并返回新内容
 
   return jsonify(response)  # 将响应数据封装为JSON格式返回

@@ -49,6 +49,7 @@ class Testing:
     return self.s_flow_log
 
   def element_driver(self):
+    #noinspection PyBroadException
     try:
       self.s_flow_log = "正在加载chromedriver"
       chrome_options = Options()
@@ -63,6 +64,7 @@ class Testing:
   def element_url(self,url=None):
     if not url:url= f"""https://{self.dict_value["flow_input_ip"]}/"""
     self.s_flow_log = f"正在加载URL：{url}"
+    #noinspection all
     try:
       self.driver.get(url)
     except:
@@ -78,6 +80,7 @@ class Testing:
     return True
 
   def element_begin(self):
+    #noinspection PyBroadException
     try:
       for i in range(3):
         self.bt_begin = self.driver.find_element(By.ID, 'button-1051-btnInnerEl')
@@ -91,7 +94,9 @@ class Testing:
     if self.bt_begin.text != "开始":
       self.s_flow_log = "测试结束(开始按钮未识别！！！)"
       return False
+    #noinspection all
     try:
+      #noinspection all
       input_time = self.driver.find_element(By.ID, 'numberfield-1075-inputEl')
       input_time.clear()
       input_time.send_keys(self.dict_value["flow_input_sec"])
@@ -99,6 +104,7 @@ class Testing:
       self.s_flow_log = "测试结束(设置测试时长异常！！！)"
       return False
     self.time_begin = datetime.now() - timedelta(seconds=30)
+    #noinspection PyBroadException
     try:
       self.bt_begin.click()
     except:
@@ -110,6 +116,7 @@ class Testing:
     return True
 
   def element_wait(self):
+    #noinspection PyBroadException
     try:
       while self.bt_begin.text != "开始":
         text_time = self.driver.find_element(By.ID, 'component-1084')
@@ -126,6 +133,7 @@ class Testing:
       return False
 
   def element_page(self):
+    # noinspection all
     try:
       tab_log = self.driver.find_element(By.ID, 'tab-1379-btnInnerEl')
       tab_log.click()
@@ -137,6 +145,7 @@ class Testing:
 
   def element_df(self, time_begin):
     list_dic = []
+    #noinspection PyBroadException
     try:
       # table = self.chrome.get_element_id('ext-element-45')
       table = self.driver.find_element(By.CSS_SELECTOR,
