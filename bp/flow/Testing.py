@@ -43,10 +43,10 @@ class Testing():
       return f"{self.s_flow_log}"
     if s_flow_type=="开始申请":
       buf=s_flow_values.split(",")
-      self.dict_value["flow_input_ip"]=buf[1].strip()
-      self.dict_value["flow_input_order"]=buf[2].strip()
-      self.dict_value["flow_input_operator"]=buf[3].strip()
-      self.dict_value["flow_input_sec"]=buf[4].strip()
+      self.dict_value["flow_input_ip"]=buf[0].strip()
+      self.dict_value["flow_input_order"]=buf[1].strip()
+      self.dict_value["flow_input_operator"]=buf[2].strip()
+      self.dict_value["flow_input_sec"]=buf[3].strip()
       print(self.dict_value)
       self.t = threading.Thread(target=self.thread_run)
       self.t.start()
@@ -103,9 +103,13 @@ class Testing():
       input_time.send_keys(self.dict_value["flow_input_sec"])
     except:
       self.s_flow_log = "测试结束(设置测试时长异常！！！)"
-      return false()
+      return False
     self.time_begin = datetime.now() - timedelta(seconds=30)
-    self.bt_begin.click()
+    try:
+      self.bt_begin.click()
+    except:
+      self.s_flow_log = "测试结束(开始按钮按下异常！！！)"
+      return False
     for i in range(3):
       self.s_flow_log = f"测试按钮按下延时({i})"
       time.sleep(1)
