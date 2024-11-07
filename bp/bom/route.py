@@ -55,7 +55,6 @@ def index():
         sWhere += "and ".join(listb)
 
     df = Sql.get_table (f'select * from V_BOM_PnData {sWhere} ORDER BY 物料代码')
-    print(df)
     iend = math.ceil(len(df) / page_size)
     iOffset = page - 5
     if iOffset <= 0:
@@ -85,7 +84,6 @@ def index():
     start_index = (page - 1) * page_size
     end_index = page * page_size
     page_data = df[start_index:end_index]
-    print(page_data)
     html_detail="<ul>"
     for idx, row in page_data.iterrows():
         html_detail+="<li>"
