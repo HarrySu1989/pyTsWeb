@@ -49,11 +49,14 @@ class Testing:
       self.s_flow_log = "正在加载chromedriver"
       chrome_options = Options()
       chrome_options.add_argument("--window-size=1200,1000")
-      service = Service('./bp/flow/chromedriver-130.0.6723.91.exe')
+      # service = Service('./bp/flow/chromedriver-130.0.6723.91.exe')
+      service = Service('D:/Git/pyTsWeb/bp/flow/chromedriver-130.0.6723.91.exe')
       self.driver = webdriver.Chrome(options=chrome_options, service=service)
+      print(f"self.driver:{self.driver}")
       return True
-    except Exception:
+    except Exception as e:
       self.s_flow_log = "测试结束(加载chromedriver异常)"
+      print(e)
       return False
 
   def element_url(self,url=None):
