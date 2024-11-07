@@ -28,7 +28,7 @@ class Testing:
 #string url = @"http://172.16.12.89:5000/flow/?q=10.77.77.108,123345,harry,1";
 
 
-  def get_value(self, s_flow_type:str,s_flow_values:str):
+  def get_value(self, s_flow_type:str):
     if self.t and self.t.is_alive():
       if s_flow_type=="开始申请":
         return "当前流量仪正在测试"
@@ -37,7 +37,6 @@ class Testing:
         return "结束申请"
       return f"{self.s_flow_log}"
     if s_flow_type=="开始申请":
-      self.values=Values(s_flow_values)
       self.t = threading.Thread(target=self.thread_run)
       self.t.start()
       self.sq_end = False
@@ -213,7 +212,7 @@ class Testing:
     #     self.log = "测试结束(中断)"
     #     self.count = 0
     #     return
-
+dict_testing:{Testing}={}
 class Values:
   def __init__(self,s_flow_values=None):
     if s_flow_values is None:
@@ -223,3 +222,7 @@ class Values:
     self.flow_input_order = buf[1].strip()
     self.flow_input_operator = buf[2].strip()
     self.flow_input_sec = buf[3].strip()
+  def get_testing(self)->Testing:
+    if self.flow_input_ip not in dict_testing.keys():
+      dict_testing[self.flow_input_ip] = Testing()
+    return dict_testing[self.flow_input_ip]

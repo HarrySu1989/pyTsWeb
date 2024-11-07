@@ -2,13 +2,13 @@ from flask import Blueprint, jsonify, request
 import glb.ViewBase
 from .Testing import Testing,Values
 bp = Blueprint('flow', __name__, url_prefix='/flow')
-test_flow_a = Testing()
+
 
 @bp.route('/', methods=['GET', 'POST'])
 def index():
   q = request.args.get('q')
   values=Values(q)
-
+  testing = values.get_testing()
   # <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  <!-- 引入jQuery库 -->
   #
   # current_directory = os.path.dirname(os.path.realpath(__file__))
@@ -47,7 +47,7 @@ def index():
   {s_style}
   <section class="py-5 text-center container">
 
-  <div ><h1 id="s_flow_log">{test_flow_a.s_flow_log}</h1></div>
+  <div ><h1 id="s_flow_log">{testing.s_flow_log}</h1></div>
 
   </section>
   <main class="form-signin w-100 m-auto">
@@ -81,9 +81,10 @@ def index():
 def update():
   data = request.json  # 获取Ajax请求发送的JSON数据
   s_flow_type = data.get('s_flow_type')
-  s_flow_values = data.get('s_flow_values')
-  # response = {'message': 'Success', 'new_content': '这是更新后的内容'}  # 模拟处理并返回新内容
-  global test_flow_a
-  response = {'message': 'Error1', 'new_content': f'{test_flow_a.get_value(s_flow_type, s_flow_values)}'}  # 模拟处理并返回新内容
+  values = Values(data.get('s_flow_values'))
+  testing=values.get_testing()
+  testing.values=values
+  new_content=f'{testing.get_value(s_flow_type)}'
+  response = {'message': 'Error1', 'new_content': new_content}  # 模拟处理并返回新内容
 
   return jsonify(response)  # 将响应数据封装为JSON格式返回
