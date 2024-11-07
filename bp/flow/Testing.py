@@ -28,12 +28,7 @@ class Testing():
 
 #string url = @"http://192.168.124.55:5000/flow/?q=10.77.77.108,123345,harry,1";
 #string url = @"http://172.16.12.89:5000/flow/?q=10.77.77.108,123345,harry,1";
-  def get_url(self):
-    return f"""http://{self.dict_value["flow_input_ip"]}/"""
 
-  @property
-  def user(self):
-    return self.dict_value["flow_input_operator"]
 
   def get_value(self, s_flow_values:str):
     if self.t and self.t.is_alive():
@@ -69,7 +64,7 @@ class Testing():
       return False
 
   def element_url(self,url=None):
-    if not url:url=self.get_url()
+    if not url:url=f"""http://{self.dict_value["flow_input_ip"]}/"""
     self.s_flow_log = f"正在加载URL：{url}"
     try:
       self.driver.get(url)
@@ -94,7 +89,7 @@ class Testing():
       self.s_flow_log = "测试结束(获取开始按钮异常！！！)"
       return False
     if self.bt_begin.text != "开始":
-      self.s_flow_log = f"测试结束({self.get_url()}测试被占用)"
+      self.s_flow_log = f"""测试结束({self.dict_value["flow_input_ip"]}测试被占用)"""
       return False
     if self.bt_begin.text != "开始":
       self.s_flow_log = "测试结束(开始按钮未识别！！！)"
@@ -187,7 +182,7 @@ class Testing():
       if not self.element_wait(): return
       if not self.element_page(): return
       df=self.element_df(self.time_begin)
-      sql.set_insert(df, self.user)
+      sql.set_insert(df, self.dict_value["flow_input_operator"])
       self.s_flow_log = "测试结束(完成)"
     except Exception as e:
       print(e)
