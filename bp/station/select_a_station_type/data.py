@@ -14,6 +14,7 @@ class Data:
         self.list_clm_head:list[str]=[]
         self.id_cur=0
         self.path=cache.get_path(__file__)
+        #noinspection all
         self.dict_clm={
             "ID":"ID",
             "OrderNum":"工单",
@@ -35,6 +36,7 @@ class Data:
         if len(self.list_clm_head)>0:
             # print(f"从字典加载1:{self.list_clm_head}")
             return self.list_clm_head
+        #noinspection all
         s0 = f"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{self.sql_a}'"
         res = Sql.get_list(s0)
         self.list_clm_head= res
@@ -42,12 +44,12 @@ class Data:
         return res
 
     def set_refresh(self):
+        #noinspection all
         s0 = f"select {','.join(self.dict_clm.keys())} from {self.sql_a} WHERE ID>{self.id_cur} order by ID"
         df=Sql.get_table(s0)
         if len(df) == 0:
             print(f"工序更新：无需更新，当前共{len(self.df)}行")
             return
-        # df = df.dropna(axis=1, how='all')  # 去掉全为 NA 的列
         len_a = len(self.df)
         if not len(self.df):
             self.df=df
@@ -145,6 +147,7 @@ class Data:
         return df
 
     def get_df(self, list_str_where):
+        #noinspection all
         s0 = f"""select * from {self.sql_a} where {' and '.join(list_str_where)}"""
         print(s0)
         return Sql.get_table(s0)

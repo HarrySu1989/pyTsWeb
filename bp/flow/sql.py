@@ -2,6 +2,7 @@
 import SQL.SqlBase as Sql
 import traceback
 table = "tOdBd_flow"
+# noinspection all
 list_clm = Sql.get_list(f"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{table}'")
 
 
@@ -27,10 +28,13 @@ def set_insert(df,dict_value:{}):
           dick_a[f"[{key}]"]=f"'{value}'"
       fsn=dick_a["[FSN]"]
       dick_a["[OrCode]"]=fsn
+      # noinspection all
       Sql.set_insert(f"""UPDATE {table} SET bNewest='False' where FSN={fsn} """)
+      # noinspection all
       dick_a[f"[FsnCount]"]= str(Sql.get_int(f"""SELECT count(id) FROM {table} WHERE FSN = {fsn}"""))
       s_clm_name = ",".join(dick_a.keys())
       s_clm_value = ",".join(dick_a.values())
+      # noinspection all
       Sql.set_insert(f"""INSERT INTO {table} ({s_clm_name}) values ({s_clm_value})""")
   except :
     trace = traceback.format_exc()

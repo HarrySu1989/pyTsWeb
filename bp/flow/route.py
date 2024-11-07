@@ -1,9 +1,7 @@
-from flask import Blueprint, jsonify, request,session
-
-from decorators import login_required
-import glb.ViewBase as vb
+from flask import Blueprint, jsonify, request
+import glb.ViewBase
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 import time
 from .Testing import Testing
 import bp.flow.sql as sql
@@ -90,12 +88,12 @@ def index():
 """
 
   # <a href="{url_for('flow.test1')}”>测试1</a>
-  return vb.get_view(bp, html)
+  return glb.ViewBase.get_view(bp, html)
 
 test = Testing()
 # http://192.168.8.146:5000/flow/test/open
 @bp.route('/test/open')
-def open():
+def open_test():
   if not test.element_driver():return
   # project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
   project_root = os.path.join(os.path.dirname(__file__))
@@ -103,14 +101,13 @@ def open():
   url = f"{project_root}/LyApp.mhtml"
   test.driver.get(url)
   time.sleep(1)
-  time_a = datetime.now()
   time_a = datetime.strptime(f"2024-11-04 17:00:12", "%Y-%m-%d %H:%M:%S")
   df = test.element_df(time_a)
   print(df)
   print(df.columns)
   dict_value={"flow_input_operator":"harry","flow_input_order":"20110101001"}
   sql.set_insert(df,dict_value)
-  return vb.get_view(bp, "open")
+  return glb.ViewBase.get_view(bp, "open")
 
 @bp.route('/update', methods=['POST'])
 def update():

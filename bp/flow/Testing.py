@@ -1,24 +1,18 @@
 
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
 from selenium.common import TimeoutException
-from flask import session
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from datetime import datetime, timedelta
 import time
 import threading
-from time import sleep
-
-from sqlalchemy import false
-
-import glb.uc as uc
 import uc.uc_pd as pd
 import bp.flow.sql as sql
 
-class Testing():
+class Testing:
   def __init__(self):
     self.dict_value={}
     self.t = None
@@ -62,12 +56,12 @@ class Testing():
       service = Service('./bp/flow/chromedriver-130.0.6723.91.exe')
       self.driver = webdriver.Chrome(options=chrome_options, service=service)
       return True
-    except Exception as e:
+    except Exception:
       self.s_flow_log = "测试结束(加载chromedriver异常)"
       return False
 
   def element_url(self,url=None):
-    if not url:url=f"""http://{self.dict_value["flow_input_ip"]}/"""
+    if not url:url= f"""https://{self.dict_value["flow_input_ip"]}/"""
     self.s_flow_log = f"正在加载URL：{url}"
     try:
       self.driver.get(url)
@@ -75,8 +69,8 @@ class Testing():
       self.s_flow_log = f"测试结束(无法加载URL：{url})"
       return False
     try:
-      element = WebDriverWait(self.driver, 5).until(
-        EC.visibility_of_element_located((By.ID, 'button-1051-btnInnerEl'))
+        WebDriverWait(self.driver, 5).until(
+        expected_conditions.visibility_of_element_located((By.ID, 'button-1051-btnInnerEl'))
       )
     except TimeoutException:
       self.s_flow_log = "测试结束(等待超时，网页加载异常)"
@@ -182,7 +176,7 @@ class Testing():
           dic_a[s_key] = tds[1].get_attribute("innerHTML").strip()
         self.s_flow_log = element_class
         list_dic.append(dic_a)
-    except Exception as e:
+    except Exception:
       self.s_flow_log = "测试结束(获取测试数据异常)"
     finally:
       df = pd.get_df(list_dic)
