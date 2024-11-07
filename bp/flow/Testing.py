@@ -24,6 +24,7 @@ class Testing:
     self.time_begin = None
 
 #string url = @"http://192.168.8.146:5000/flow/?q=10.77.77.108,123345,harry,1";matebook
+#string url = @"http://192.168.8.146:5000/flow/?q=baidu.com,123345,harry,1";matebook
 #string url = @"http://172.16.12.89:5000/flow/?q=10.77.77.108,123345,harry,1";
 
 
