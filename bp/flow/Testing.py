@@ -57,7 +57,8 @@ class Testing:
       return False
 
   def element_url(self,url=None):
-    if not url:url= f"""https://{self.values.flow_input_ip}/"""
+    # noinspection all
+    if not url:url= f"""http://{self.values.flow_input_ip}/"""
     self.s_flow_log = f"正在加载URL：{url}"
     #noinspection all
     try:
