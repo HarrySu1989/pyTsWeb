@@ -78,6 +78,10 @@ def index():
   # <a href="{url_for('flow.test1')}”>测试1</a>
   return glb.ViewBase.get_view(bp, html)
 
+@bp.route('/flowtest', methods=['GET', 'POST'])
+def flowtest():
+  values = Values("")
+  return glb.ViewBase.get_view(bp, "flowtest")
 
 @bp.route('/update', methods=['POST'])
 def update():

@@ -61,7 +61,8 @@ class Testing:
 
   def element_url(self,url=None):
     # noinspection all
-    if not url:url= f"""http://{self.values.flow_input_ip}/"""
+    # if not url:url= f"""http://{self.values.flow_input_ip}/"""
+    if not url:url= f"""{self.values.flow_input_ip}"""
     self.s_flow_log = f"正在加载URL：{url}"
     #noinspection all
     try:
