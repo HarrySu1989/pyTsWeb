@@ -14,7 +14,7 @@ import bp.flow.sql as sql
 
 class Testing:
   def __init__(self):
-    self.dict_value={}
+    self.values=Values()
     self.t = None
     self.count = 0
     self.sq_end = False
@@ -23,7 +23,7 @@ class Testing:
     self.bt_begin = None
     self.time_begin = None
 
-#string url = @"http://192.168.124.55:5000/flow/?q=10.77.77.108,123345,harry,1";
+#string url = @"http://192.168.8.146:5000/flow/?q=10.77.77.108,123345,harry,1";matebook
 #string url = @"http://172.16.12.89:5000/flow/?q=10.77.77.108,123345,harry,1";
 
 
@@ -36,12 +36,7 @@ class Testing:
         return "结束申请"
       return f"{self.s_flow_log}"
     if s_flow_type=="开始申请":
-      buf=s_flow_values.split(",")
-      self.dict_value["flow_input_ip"]=buf[0].strip()
-      self.dict_value["flow_input_order"]=buf[1].strip()
-      self.dict_value["flow_input_operator"]=buf[2].strip()
-      self.dict_value["flow_input_sec"]=buf[3].strip()
-      print(self.dict_value)
+      self.values=Values(s_flow_values)
       self.t = threading.Thread(target=self.thread_run)
       self.t.start()
       self.sq_end = False
@@ -62,7 +57,7 @@ class Testing:
       return False
 
   def element_url(self,url=None):
-    if not url:url= f"""https://{self.dict_value["flow_input_ip"]}/"""
+    if not url:url= f"""https://{self.values.flow_input_ip}/"""
     self.s_flow_log = f"正在加载URL：{url}"
     #noinspection all
     try:
@@ -89,7 +84,7 @@ class Testing:
       self.s_flow_log = "测试结束(获取开始按钮异常！！！)"
       return False
     if self.bt_begin.text != "开始":
-      self.s_flow_log = f"""测试结束({self.dict_value["flow_input_ip"]}测试被占用)"""
+      self.s_flow_log = f"""测试结束({self.values.flow_input_ip}测试被占用)"""
       return False
     if self.bt_begin.text != "开始":
       self.s_flow_log = "测试结束(开始按钮未识别！！！)"
@@ -99,7 +94,7 @@ class Testing:
       #noinspection all
       input_time = self.driver.find_element(By.ID, 'numberfield-1075-inputEl')
       input_time.clear()
-      input_time.send_keys(self.dict_value["flow_input_sec"])
+      input_time.send_keys(self.values.flow_input_sec)
     except:
       self.s_flow_log = "测试结束(设置测试时长异常！！！)"
       return False
@@ -199,7 +194,7 @@ class Testing:
       if not self.element_wait(): return
       if not self.element_page(): return
       df=self.element_df(self.time_begin)
-      sql.set_insert(df, self.dict_value)
+      sql.set_insert(df, self.values.flow_input_operator,self.values.flow_input_order)
       self.s_flow_log = "测试结束(完成)"
     except Exception as e:
       print(e)
@@ -217,3 +212,13 @@ class Testing:
     #     self.log = "测试结束(中断)"
     #     self.count = 0
     #     return
+
+class Values:
+  def __init__(self,s_flow_values=None):
+    if s_flow_values is None:
+      s_flow_values="10.77.77.108,test,test,1"
+    buf = s_flow_values.split(",")
+    self.flow_input_ip = buf[0].strip()
+    self.flow_input_order = buf[1].strip()
+    self.flow_input_operator = buf[2].strip()
+    self.flow_input_sec = buf[3].strip()

@@ -1,23 +1,14 @@
 from flask import Blueprint, jsonify, request
 import glb.ViewBase
-from .Testing import Testing
+from .Testing import Testing,Values
 bp = Blueprint('flow', __name__, url_prefix='/flow')
 test_flow_a = Testing()
 
 @bp.route('/', methods=['GET', 'POST'])
 def index():
   q = request.args.get('q')
-  s_ip=""
-  s_order=""
-  s_user=""
-  s_sec="1"
-  if q:
-    buf=q.split(',')
-    s_ip=buf[0]
-    s_order=buf[1]
-    s_user=buf[2]
-    s_sec=buf[3]
-    print(s_ip)
+  values=Values(q)
+
   # <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  <!-- 引入jQuery库 -->
   #
   # current_directory = os.path.dirname(os.path.realpath(__file__))
@@ -61,19 +52,19 @@ def index():
   </section>
   <main class="form-signin w-100 m-auto">
 			<div class="form-floating">
-				<input  name="username" type="username" class="form-control" id="flow_input_ip" value="{s_ip}">
+				<input  name="username" type="username" class="form-control" id="flow_input_ip" value="{values.flow_input_ip}">
 				<label for="floatingInput">IP</label>
 			</div>
 			<div class="form-floating">
-				<input  name="username" type="username" class="form-control" id="flow_input_order" value="{s_order}">
+				<input  name="username" type="username" class="form-control" id="flow_input_order" value="{values.flow_input_order}">
 				<label for="floatingInput">工单</label>
 			</div>
 			<div class="form-floating">
-				<input  name="username" type="username" class="form-control" id="flow_input_operator" value="{s_user}" readonly>
+				<input  name="username" type="username" class="form-control" id="flow_input_operator" value="{values.flow_input_operator}" readonly>
 				<label for="floatingInput">测试员</label>
 			</div>
 			<div class="form-floating">
-				<input  name="username" type="username" class="form-control" id="flow_input_sec" value="{s_sec}">
+				<input  name="username" type="username" class="form-control" id="flow_input_sec" value="{values.flow_input_sec}">
 				<label for="floatingInput">测试时间（分钟）</label>
 			</div>
     <button id="button-flow-begin" class="btn btn-secondary w-100 py-2">开始</button>

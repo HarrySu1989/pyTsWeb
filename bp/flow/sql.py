@@ -6,7 +6,7 @@ table = "tOdBd_flow"
 list_clm = Sql.get_list(f"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{table}'")
 
 
-def set_insert(df,dict_value:{}):
+def set_insert(df,s_operator,s_order_num):
   # list_clm_from=df.columns
   # for clm in list_clm_from:
   #   l_clm_name=[]
@@ -16,8 +16,8 @@ def set_insert(df,dict_value:{}):
     for index, row in df.iterrows():
       print("****************************************")
       dick_a={}
-      dick_a[f"[Operator]"]=f"""'{dict_value["flow_input_operator"]}'"""
-      dick_a["[OrderNum]"]=f"""'{dict_value["flow_input_order"]}'"""
+      dick_a[f"[Operator]"]=f"'{s_operator}'"
+      dick_a["[OrderNum]"]=f"'{s_order_num}'"
       dick_a[f"[bNewest]"]=f"'True'"
 
       # list_clm_name.append("OrderNum")
