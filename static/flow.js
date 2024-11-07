@@ -26,12 +26,13 @@ function get_data(s_flow_type,s_flow_values, heading, button) {
   });
 }
 
+    // # if not url:url= f"""http://{self.values.flow_input_ip}/"""
 $(document).ready(function () {
   $('#button-flow-begin').click(function () {
     var s_flow_log = document.getElementById('s_flow_log');
     var button = document.getElementById('button-flow-begin');
     var s_flow_values =`
-      ${document.getElementById('flow_input_ip').value},
+      http://${document.getElementById('flow_input_ip').value},
       ${document.getElementById('flow_input_order').value},
       ${document.getElementById('flow_input_operator').value},
       ${document.getElementById('flow_input_sec').value}`
