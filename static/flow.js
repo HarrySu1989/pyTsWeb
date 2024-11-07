@@ -41,8 +41,7 @@ $(document).ready(function () {
       button.innerHTML = "结束申请"
       return;
     } else if (button.innerHTML === "开始") {
-      get_data(`开始申请`,s_flow_values, button,
-          s_flow_log, button)
+      get_data(`开始申请`,s_flow_values, s_flow_log, button)
       button.innerHTML = "结束"
     } else if (button.innerHTML === "结束申请") {
       return;
