@@ -11,6 +11,9 @@ from datetime import datetime, timedelta
 import time
 import threading
 from time import sleep
+
+from sqlalchemy import false
+
 import glb.uc as uc
 import uc.uc_pd as pd
 import bp.flow.sql as sql
@@ -94,6 +97,13 @@ class Testing():
     if self.bt_begin.text != "开始":
       self.s_flow_log = "测试结束(开始按钮未识别！！！)"
       return False
+    try:
+      input_time = self.driver.find_element(By.ID, 'numberfield-1075-inputEl')
+      input_time.clear()
+      input_time.send_keys(self.dict_value["flow_input_sec"])
+    except:
+      self.s_flow_log = "测试结束(设置测试时长异常！！！)"
+      return false()
     self.time_begin = datetime.now() - timedelta(seconds=30)
     self.bt_begin.click()
     for i in range(3):
