@@ -4,7 +4,7 @@ import bp.station.select_a_station_type.glb as sel_a
 import bp.station.download.glb as download_a
 from datetime import datetime, timedelta
 from flask import Blueprint, url_for
-
+import glb.log as log
 bp = Blueprint('station', __name__, url_prefix='/station')
 
 
@@ -182,5 +182,6 @@ def index():
   html_end = f"""<a href="{url_for('station.download', q=guide.s_q)}" >下载</a>"""
   html = guide.get_html(html_end)
   html += guide.item_select.get_html_body()
+  log.add_log(f"加载界面-工序,条件：{guide.s_q}")
 
   return vb.get_view(bp, html)

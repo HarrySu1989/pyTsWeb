@@ -9,6 +9,7 @@ from flask_wtf.file import FileField
 from decorators import login_required
 bp = Blueprint('purchase', __name__, url_prefix='/purchase')
 from openpyxl import load_workbook
+import glb.log as log
 class UploadForm(FlaskForm):
     file = FileField('')
     submit = SubmitField('上传')
@@ -117,4 +118,5 @@ def index():
     guide=Guide()
     html=guide.get_html()
     html+=guide.item_gx.get_html_body()
+    log.add_log(f"加载界面-采购单,条件：{guide.s_q}")
     return vb.get_view(bp, html)

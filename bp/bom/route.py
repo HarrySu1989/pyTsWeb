@@ -27,7 +27,7 @@ def GetPage(page):
 @bp.route('/')
 @login_required
 def index():
-    log.add("刷新BOM界面")
+    log.add_log("加载界面-BOM")
     page_size = 50  # 每页的数量
     select_size = 11
     page = GetPage(request.args.get('page'))

@@ -4,12 +4,13 @@ import socket
 import pandas as pd
 import urllib
 from sqlalchemy import create_engine
+import glb.log as log
 
 sConnect = "DRIVER={ODBC Driver 17 for SQL Server};SERVER=192.168.0.90;DATABASE=TestModuleResult;UID=xjs;PWD=Xia0601"
 host_name = socket.gethostname()
 if host_name in ('LAPTOP-57TK7AD9', 'Harry'):
   sConnect = 'DRIVER={ODBC Driver 17 for SQL Server};SERVER=localhost;DATABASE=TestModuleResult;UID=sa;PWD=123456'
-print(f"数据库配置:{sConnect}")
+log.add_log_b(f"数据库配置:{sConnect}")
 
 
 def get_table(s0) -> pd.DataFrame:

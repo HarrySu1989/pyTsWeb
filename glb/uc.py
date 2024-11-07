@@ -96,7 +96,6 @@ class Guide:
 
     def get_html(self,html_end=""):
         s_q = self.s_q
-        log.add(f"刷新工序界面,条件：{s_q}")
         html = ""
         i_offset = 0
         s_menu=""

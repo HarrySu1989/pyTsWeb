@@ -5,7 +5,7 @@ import calendar
 import SQL.SqlBase as Sql
 import glb.cache as cache
 import pandas as pd
-
+import glb.log as log
 
 class Data:
     def __init__(self,sql_a):
@@ -48,7 +48,7 @@ class Data:
         s0 = f"select {','.join(self.dict_clm.keys())} from {self.sql_a} WHERE ID>{self.id_cur} order by ID"
         df=Sql.get_table(s0)
         if len(df) == 0:
-            print(f"工序更新：无需更新，当前共{len(self.df)}行")
+            log.add_log(f"工序更新：无需更新，当前共{len(self.df)}行")
             return
         len_a = len(self.df)
         if not len(self.df):
@@ -56,7 +56,7 @@ class Data:
         else:
             self.df = self.df._append(df, ignore_index=True)
         # print(df)
-        print(f"工序更新：插入{len(df)}行,当前共{len(self.df)}行")
+        log.add_log(f"工序更新：插入{len(df)}行,当前共{len(self.df)}行")
         self.id_cur=self.df.iloc[-1]["ID"]
 
     def get_list_order(self):

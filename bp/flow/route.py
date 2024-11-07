@@ -1,11 +1,13 @@
 from flask import Blueprint, jsonify, request
 import glb.ViewBase
 from .Testing import Testing,Values
+import glb.log as log
 bp = Blueprint('flow', __name__, url_prefix='/flow')
 
 
 @bp.route('/', methods=['GET', 'POST'])
 def index():
+  log.add_log(f"加载界面-流量仪")
   q = request.args.get('q')
   values=Values(q)
   testing = values.get_testing()
