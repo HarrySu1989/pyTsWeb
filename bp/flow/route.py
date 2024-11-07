@@ -115,9 +115,10 @@ def open():
 @bp.route('/update', methods=['POST'])
 def update():
   data = request.json  # 获取Ajax请求发送的JSON数据
+  s_flow_type = data.get('s_flow_type')
   s_flow_values = data.get('s_flow_values')
   # response = {'message': 'Success', 'new_content': '这是更新后的内容'}  # 模拟处理并返回新内容
   global test
-  response = {'message': 'Error1', 'new_content': f'{test.get_value(s_flow_values)}'}  # 模拟处理并返回新内容
+  response = {'message': 'Error1', 'new_content': f'{test.get_value(s_flow_type,s_flow_values)}'}  # 模拟处理并返回新内容
 
   return jsonify(response)  # 将响应数据封装为JSON格式返回

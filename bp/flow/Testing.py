@@ -33,15 +33,15 @@ class Testing():
 #string url = @"http://172.16.12.89:5000/flow/?q=10.77.77.108,123345,harry,1";
 
 
-  def get_value(self, s_flow_values:str):
+  def get_value(self, s_flow_type:str,s_flow_values:str):
     if self.t and self.t.is_alive():
-      if s_flow_values.startswith("开始申请"):
+      if s_flow_type=="开始申请":
         return "当前流量仪正在测试"
-      elif s_flow_values == "结束申请":
+      elif s_flow_type == "结束申请":
         self.sq_end = True
         return "结束申请"
       return f"{self.s_flow_log}"
-    if s_flow_values.startswith("开始申请"):
+    if s_flow_type=="开始申请":
       buf=s_flow_values.split(",")
       self.dict_value["flow_input_ip"]=buf[1].strip()
       self.dict_value["flow_input_order"]=buf[2].strip()
