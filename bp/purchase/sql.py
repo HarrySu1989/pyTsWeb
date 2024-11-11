@@ -27,6 +27,7 @@ class tBom_PurchaseOrders(Clm.Calms):
         html = "<ul>"
         for idx, row in df.iterrows():
             id1 = row['编号']
+            # test
             href = url_for('purchase.detail', id=id1)
             html += "<li>"
             html += f"<a href = {href} > {row['编号']} </a >"
