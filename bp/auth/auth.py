@@ -1,13 +1,15 @@
-from flask import Blueprint, render_template, jsonify,redirect,url_for,session,request
-import glb.ViewBase as vb
+from flask import Blueprint, redirect, url_for, session, request
+
 import bp.auth.sql as sql
+import glb.ViewBase as vb
 
 bp = Blueprint('auth', __name__, url_prefix="/auth")
 
+
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == "GET":
-        s_style="""
+  if request.method == "GET":
+    s_style = """
         <style>
         html,
 body {
@@ -37,7 +39,7 @@ body {
 
         </style>
         """
-        html=f"""
+    html = f"""
         {s_style}
 <main class="form-signin w-100 m-auto">
 		<form  method="POST">
@@ -62,43 +64,41 @@ body {
 		</form>
 	</main>
 """
-        return vb.get_view(bp, html)
-    elif request.method == "POST":
-        s_username=request.form['username']
-        s_password=request.form['password']
-        s_re=request.form.get("s_re")
-        if sql.get_login(str(s_username), s_password):
-            session['user_id'] = s_username
-            if s_re:
-                session.permanent = True
-            else:
-                session.permanent = False
-            return redirect("/")
-        else:
-            session.pop('user_id', None)
-            return redirect(url_for('auth.login'))
+    return vb.get_view(bp, html)
+  elif request.method == "POST":
+    s_username = request.form['username']
+    s_password = request.form['password']
+    s_re = request.form.get("s_re")
+    if sql.get_login(str(s_username), s_password):
+      session['user_id'] = s_username
+      if s_re:
+        session.permanent = True
+      else:
+        session.permanent = False
+      return redirect("/")
+    else:
+      session.pop('user_id', None)
+      return redirect(url_for('auth.login'))
 
-        # if form.validate():
-        #     email = form.email.data
-        #     password = form.password.data
-        #     user = UserModel.query.filter_by(email=email).first()
-        #     if not user:
-        #         print("邮箱在数据库中不存在！")
-        #         return redirect(url_for('auth.login'))
-        #     if not check_password_hash(user.password, password):
-        #         print("密码错误！")
-        #         return redirect(url_for('auth.login'))
-        #     session['user_id'] = user.id
-        #     return redirect("/")
-        # else:
-        #     print(form.errors)
-        #     return redirect(url_for('auth.login'))
-
-
+    # if form.validate():
+    #     email = form.email.data
+    #     password = form.password.data
+    #     user = UserModel.query.filter_by(email=email).first()
+    #     if not user:
+    #         print("邮箱在数据库中不存在！")
+    #         return redirect(url_for('auth.login'))
+    #     if not check_password_hash(user.password, password):
+    #         print("密码错误！")
+    #         return redirect(url_for('auth.login'))
+    #     session['user_id'] = user.id
+    #     return redirect("/")
+    # else:
+    #     print(form.errors)
+    #     return redirect(url_for('auth.login'))
 
 
 @bp.route('/logout')
 def logout():
-    session.pop('user_id', None)
-    # session.clear()
-    return redirect(url_for('auth.login'))
+  session.pop('user_id', None)
+  # session.clear()
+  return redirect(url_for('auth.login'))
