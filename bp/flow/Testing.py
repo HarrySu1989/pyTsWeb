@@ -150,7 +150,12 @@ class Testing:
     return False
 
   def element_df_get_table(self):
-    list_id= ['[style*="width: 2372px; transform: translate3d(0px, 0px, 0px);"]']
+    # noinspection all
+    list_id= []
+    list_id.append('[style*="width: 2372px; transform: translate3d(0px, 0px, 0px);"]')
+    list_id.append('[style*="width: 2232px; transform: translate3d(0px, 0px, 0px);"]')
+    #width: 2372px; transform: translate3d(0px, 0px, 0px);
+    #width: 2232px; transform: translate3d(0px, 0px, 0px);
     for id_x in list_id:
       # noinspection all
       try:
