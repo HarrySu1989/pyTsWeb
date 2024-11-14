@@ -9,6 +9,9 @@ from selenium.webdriver.chrome.service import Service
 from datetime import datetime, timedelta
 import time
 import threading
+
+from wx.lib.agw.pyprogress import Continue
+
 import uc.uc_pd as pd
 import bp.flow.sql as sql
 
@@ -133,15 +136,18 @@ class Testing:
       return False
 
   def element_page(self):
-    # noinspection all
-    try:
-      tab_log = self.driver.find_element(By.ID, 'tab-1379-btnInnerEl')
-      tab_log.click()
-      time.sleep(2)
-      return True
-    except:
-      self.s_flow_log = "测试结束(无法找到日志页面)"
-      return False
+    list_id=["tab-1379-btnInnerEl",'tab-1408-btnInnerEl']
+    for id_x in list_id:
+      # noinspection all
+      try:
+        tab_log = self.driver.find_element(By.ID, id_x)
+        tab_log.click()
+        time.sleep(2)
+        return True
+      except:
+        pass
+    self.s_flow_log = f"测试结束(无法找到日志页面{list_id})"
+    return False
 
   def element_df(self, time_begin):
     list_dic = []
