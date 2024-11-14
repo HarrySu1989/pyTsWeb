@@ -149,13 +149,25 @@ class Testing:
     self.s_flow_log = f"测试结束(无法找到日志页面{list_id})"
     return False
 
+  def element_df_get_table(self):
+    list_id= ['[style*="width: 2372px; transform: translate3d(0px, 0px, 0px);"]']
+    for id_x in list_id:
+      # noinspection all
+      try:
+        table = self.driver.find_element(By.CSS_SELECTOR,id_x)
+        return table
+      except:
+        pass
+    self.s_flow_log = f"测试结束(无法找到table页面{list_id})"
+    return None
+
   def element_df(self, time_begin):
     list_dic = []
+    table = self.element_df_get_table()
+    if not table: return None
     #noinspection PyBroadException
     try:
-      # table = self.chrome.get_element_id('ext-element-45')
-      table = self.driver.find_element(By.CSS_SELECTOR,
-                                       '[style*="width: 2372px; transform: translate3d(0px, 0px, 0px);"]')
+
       # aa=table.find_elements(By.TAG_NAME,'table')
       element_s_row = table.find_elements(By.CSS_SELECTOR, '.x-grid-item.x-grid-row-collapsed')
       for element_row in element_s_row:
@@ -205,6 +217,7 @@ class Testing:
       if not self.element_wait(): return
       if not self.element_page(): return
       df=self.element_df(self.time_begin)
+      if not df:return
       sql.set_insert(df, self.values.flow_input_operator,self.values.flow_input_order)
       self.s_flow_log = "测试结束(完成)"
     except Exception as e:
