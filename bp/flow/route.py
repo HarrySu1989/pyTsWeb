@@ -80,7 +80,8 @@ def index():
 
 @bp.route('/flowtest', methods=['GET', 'POST'])
 def flowtest():
-  values = Values("")
+  testing = Testing()
+  testing.element_driver()
   return glb.ViewBase.get_view(bp, "flowtest")
 
 @bp.route('/update', methods=['POST'])

@@ -9,9 +9,7 @@ from selenium.webdriver.chrome.service import Service
 from datetime import datetime, timedelta
 import time
 import threading
-
-from wx.lib.agw.pyprogress import Continue
-
+import os
 import uc.uc_pd as pd
 import bp.flow.sql as sql
 
@@ -53,7 +51,9 @@ class Testing:
       chrome_options = Options()
       chrome_options.add_argument("--window-size=1200,1000")
       # service = Service('./bp/flow/chromedriver-130.0.6723.91.exe')
-      service = Service('D:/Git/pyTsWeb/bp/flow/chromedriver-130.0.6723.91.exe')
+      s_path=os.path.dirname(__file__)
+      s_exe=f"{s_path}\\chromedriver-130.0.6723.91.exe"
+      service = Service(s_exe)
       self.driver = webdriver.Chrome(options=chrome_options, service=service)
       print(f"self.driver:{self.driver}")
       return True
