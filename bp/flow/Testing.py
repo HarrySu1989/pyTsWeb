@@ -175,6 +175,8 @@ class Testing:
     try:
 
       # aa=table.find_elements(By.TAG_NAME,'table')
+      #.x-grid-item.x-grid-row-collapsed
+      #x-grid-item.x-grid-row-collapsed
       element_s_row = table.find_elements(By.CSS_SELECTOR, '.x-grid-item.x-grid-row-collapsed')
       for element_row in element_s_row:
         element_class = element_row.get_attribute('id')
