@@ -1,7 +1,10 @@
+from datetime import datetime,timedelta
+
 from flask import Blueprint, jsonify, request
 import glb.ViewBase
 from .Testing import Testing,Values
 import glb.log as log
+import os
 bp = Blueprint('flow', __name__, url_prefix='/flow')
 
 
@@ -81,7 +84,13 @@ def index():
 @bp.route('/flowtest', methods=['GET', 'POST'])
 def flowtest():
   testing = Testing()
-  testing.element_driver()
+  testing.element_driver(b_local=False)
+  s_path = os.path.dirname(__file__)
+  s_exe = f"{s_path}\\新日志界面.mhtml"
+  testing.element_url(s_exe)
+  time_begin=datetime.strptime("2024-11-14 15:57:04", "%Y-%m-%d %H:%M:%S")
+  df = testing.element_df(time_begin)
+  print(df)
   return glb.ViewBase.get_view(bp, "flowtest")
 
 @bp.route('/update', methods=['POST'])

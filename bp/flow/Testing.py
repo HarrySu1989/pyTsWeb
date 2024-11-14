@@ -44,7 +44,7 @@ class Testing:
       self.count = 0
     return self.s_flow_log
 
-  def element_driver(self):
+  def element_driver(self,b_local=True):
     #noinspection PyBroadException
     try:
       self.s_flow_log = "正在加载chromedriver"
@@ -54,7 +54,10 @@ class Testing:
       s_path=os.path.dirname(__file__)
       s_exe=f"{s_path}\\chromedriver-130.0.6723.91.exe"
       service = Service(s_exe)
-      self.driver = webdriver.Chrome(options=chrome_options, service=service)
+      if b_local:
+        self.driver = webdriver.Chrome(options=chrome_options, service=service)
+      else:
+        self.driver = webdriver.Chrome(options=chrome_options)
       print(f"self.driver:{self.driver}")
       return True
     except Exception as e:
