@@ -228,7 +228,8 @@ class Testing:
       if not self.element_wait(): return
       if not self.element_page(): return
       df=self.element_df(self.time_begin)
-      if not df:return
+      if df is None:
+        return
       sql.set_insert(df, self.values.flow_input_operator,self.values.flow_input_order)
       self.s_flow_log = "测试结束(完成)"
     except Exception as e:
