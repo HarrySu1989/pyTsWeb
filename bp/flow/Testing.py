@@ -153,6 +153,7 @@ class Testing:
     # noinspection all
     list_id= []
     list_id.append('[style*="width: 2372px; transform: translate3d(0px, 0px, 0px);"]')
+    #新日志界面里的table
     list_id.append('[style*="width: 2232px; transform: translate3d(0px, 0px, 0px);"]')
     #width: 2372px; transform: translate3d(0px, 0px, 0px);
     #width: 2232px; transform: translate3d(0px, 0px, 0px);
