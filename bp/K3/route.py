@@ -81,15 +81,7 @@ def set_物料(s_物料):
   # print(lb_a.text)
   lb_a.click()
   return True
-
-@bp.route('/', methods=['GET', 'POST'])
-def index():
-  if not set_begin():
-    return
-  if not set_物料('AOC.100G.OM3-QSFPLC-30-00-00'):
-    return
-
-  time.sleep(2)
+def set_download():
   lb_a = driver.find_element(By.XPATH, f"//*[contains(@id, 'BILLMENU_TOOLBAR-tbExport')]")
   lb_a.click()
   lb_a = None
@@ -105,7 +97,8 @@ def index():
       print("等待确认按钮")
       time.sleep(1)
   if not lb_a:
-    return "无法获取确认按钮"
+    print("无法获取确认按钮")
+    return False
 
   lb_a.click()
   lb_a = None
@@ -121,12 +114,25 @@ def index():
       print("等待下载按钮")
       time.sleep(1)
   if not lb_a:
-    return "无法获取下载按钮"
+    print("无法获取下载按钮")
+    return False
 
   lb_a.click()
   time.sleep(1)
   lb_a = driver.find_element(By.CLASS_NAME, f"k-window-actions")
   lb_a.click()
+  return True
+
+@bp.route('/', methods=['GET', 'POST'])
+def index():
+  if not set_begin():
+    return
+  if not set_物料('AOC.100G.OM3-QSFPLC-30-00-00'):
+    return
+  time.sleep(2)
+  if not set_download():
+    return
+
   #
 
 #
