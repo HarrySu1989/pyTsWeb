@@ -84,8 +84,10 @@ def set_物料(s_物料):
 
 @bp.route('/', methods=['GET', 'POST'])
 def index():
-  if not set_begin():return;
-  if not set_物料('AOC.100G.OM3-QSFPLC-30-00-00'):return;
+  if not set_begin():
+    return
+  if not set_物料('AOC.100G.OM3-QSFPLC-30-00-00'):
+    return
 
   time.sleep(2)
   lb_a = driver.find_element(By.XPATH, f"//*[contains(@id, 'BILLMENU_TOOLBAR-tbExport')]")
