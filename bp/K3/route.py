@@ -15,9 +15,7 @@ s_exe = f"{s_path}flow\\chromedriver-130.0.6723.91.exe"
 service = Service(s_exe)
 driver = webdriver.Chrome(options=chrome_options, service=service)
 driver.get("http://erp.china-tscom.com")
-@bp.route('/', methods=['GET', 'POST'])
-def index():
-
+def set_begin():
   bt_begin = None
   for i in range(10):
     try:
@@ -34,6 +32,10 @@ def index():
   tb_password.send_keys("Ts.123456")
   bt_login = driver.find_element(By.ID, 'btnLogin')
   bt_login.click()
+@bp.route('/', methods=['GET', 'POST'])
+def index():
+  set_begin()
+
   # 物料清单正查
   bt_a=None
   for i in range(30):
