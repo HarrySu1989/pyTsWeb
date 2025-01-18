@@ -6,6 +6,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import os
 import time
+
+from sqlalchemy.testing import fails
+
 bp = Blueprint('K3', __name__, url_prefix='/K3')
 chrome_options = Options()
 chrome_options.add_argument("--window-size=1200,1000")
@@ -25,31 +28,32 @@ def set_begin():
       print("等待用户窗口")
       time.sleep(1)
   if not bt_begin:
-    return "无法获取用户窗口"
+    print("无法获取用户窗口")
+    return False
 
   bt_begin.send_keys("徐俊松")
   tb_password = driver.find_element(By.ID, 'password')
   tb_password.send_keys("Ts.123456")
   bt_login = driver.find_element(By.ID, 'btnLogin')
   bt_login.click()
-@bp.route('/', methods=['GET', 'POST'])
-def index():
-  set_begin()
+  return True
 
+def set_物料(s_物料):
   # 物料清单正查
-  bt_a=None
+  bt_a = None
   for i in range(30):
     try:
-      bt_a = driver.find_element(By.XPATH,"//*[contains(text(), '物料清单正查')]")
+      bt_a = driver.find_element(By.XPATH, "//*[contains(text(), '物料清单正查')]")
       break
     except:
       print("等待物料清单正查")
       time.sleep(1)
   if not bt_a:
-    return "无法获取物料清单正查"
+    print("无法获取物料清单正查")
+    return False
   bt_a.click()
   print("成功进入物料清单正查")
-  lb_a=None
+  lb_a = None
   for i in range(30):
     try:
       # 1f8c18f9-0061-4b41-ad7d-f69a0797124c-FBILLMATERIALID
@@ -62,19 +66,27 @@ def index():
       print("等待物料编码")
       time.sleep(1)
   if not lb_a:
-    return "无法获取物物料编码"
+    print("无法获取物物料编码")
+    return False
   # ui-poplistedit-displayname
   # ui-poplistedit-displayname
   lb_b=lb_a.find_element(By.CLASS_NAME, f'k-input')
   print(lb_b)
   # 使用 JavaScript 执行器更新 span 元素的内容
-  lb_b.send_keys('AOC.100G.OM3-QSFPLC-30-00-00')
+  lb_b.send_keys(s_物料)
   time.sleep(0.2)
   lb_b.send_keys(Keys.RETURN)  # 或者使用 Keys.ENTER，它们是等价的
   time.sleep(0.2)
   lb_a = driver.find_element(By.XPATH, f"//*[contains(@id, 'FREFRESH_c')]")
   # print(lb_a.text)
   lb_a.click()
+  return True
+
+@bp.route('/', methods=['GET', 'POST'])
+def index():
+  if not set_begin():return;
+  if not set_物料('AOC.100G.OM3-QSFPLC-30-00-00'):return;
+
   time.sleep(2)
   lb_a = driver.find_element(By.XPATH, f"//*[contains(@id, 'BILLMENU_TOOLBAR-tbExport')]")
   lb_a.click()
