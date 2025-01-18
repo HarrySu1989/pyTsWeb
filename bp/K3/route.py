@@ -127,11 +127,16 @@ def set_download():
 def index():
   if not set_begin():
     return
-  if not set_物料('AOC.100G.OM3-QSFPLC-30-00-00'):
-    return
-  time.sleep(2)
-  if not set_download():
-    return
+  list=[]
+  list.append("AOC.100G.OM3-QSFPLC-28-00-00")
+  list.append("AOC.100G.OM3-QSFPLC-30-00-00")
+  list.append("AOC.100G.OM3-QSFPLC-31-00-00")
+  for s in list:
+    if not set_物料(s):
+      continue
+    time.sleep(2)
+    if not set_download():
+      continue
 
   #
 
