@@ -21,9 +21,7 @@ def index():
   for i in range(10):
     try:
       bt_begin = driver.find_element(By.ID, 'user')
-      if not bt_begin:
-        break
-      time.sleep(1)
+      break
     except:
       print("等待用户窗口")
       time.sleep(1)
@@ -40,9 +38,7 @@ def index():
   for i in range(30):
     try:
       bt_a = driver.find_element(By.XPATH,"//*[contains(text(), '物料清单正查')]")
-      if not bt_a:
-        break
-      time.sleep(1)
+      break
     except:
       print("等待物料清单正查")
       time.sleep(1)
@@ -59,14 +55,13 @@ def index():
       partial_id_string = "FBILLMATERIALID-EDITOR"
       xpath_expression = f"//*[contains(@id, '{partial_id_string}')]"
       lb_a = driver.find_element(By.XPATH, xpath_expression)
-      if not bt_a:
-        break
-      time.sleep(1)
+      break
     except:
       print("等待物料编码")
       time.sleep(1)
   if not lb_a:
     return "无法获取物物料编码"
+  lb_a.send_keys("Ts")
   print("获取物物料编码")
-  time.sleep(10)
+  time.sleep(10000000)
   return s_exe
