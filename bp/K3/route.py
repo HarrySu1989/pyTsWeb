@@ -83,6 +83,23 @@ def set_物料(s_物料):
   lb_a.click()
   return True
 def set_download():
+  time.sleep(1)
+  while True:
+    try:
+      bt_a = driver.find_element(By.XPATH, "//*[contains(text(), '正在查询')]")
+      print("正在查询")
+      time.sleep(0.5)
+    except:
+      time.sleep(0.5)
+      break
+  try:
+    bt_a = driver.find_element(By.XPATH, "//*[contains(text(), 'BOM不存在！')]")
+    lb_a = driver.find_element(By.XPATH, f"//*[contains(@id, 'ErrbtnOK')]")
+    lb_a.click()
+    print("BOM不存在")
+    return False
+  except:
+    pass
   lb_a = driver.find_element(By.XPATH, f"//*[contains(@id, 'BILLMENU_TOOLBAR-tbExport')]")
   lb_a.click()
   lb_a = None
@@ -123,8 +140,9 @@ def set_download():
   lb_a = driver.find_element(By.CLASS_NAME, f"k-window-actions")
   lb_a.click()
   return True
-text="""
-AOC.100G.OM3-QSFPLC-0/5-00-00
+test2="""test
+AOC.100G.OM3-QSFPLC-0/5-00-00"""
+text="""AOC.100G.OM3-QSFPLC-0/5-00-00
 AOC.100G.OM3-QSFPLC-01-00-00
 AOC.100G.OM3-QSFPLC-01-01-YX
 AOC.100G.OM3-QSFPLC-02-00-00
@@ -898,13 +916,22 @@ def index():
   if not set_begin():
     return
 
-  list=text.split('/n')
+  list=text.split('\n')
+  print(list)
+  count=len(list)
   for s in list:
-    if not set_物料(s):
-      continue
-    time.sleep(2)
-    if not set_download():
-      continue
+    try:
+      print("aaaaaaaaa "+s)
+      if not set_物料(s):
+        continue
+      # time.sleep(5)
+      if not set_download():
+        continue
+    except:
+      pass
+    finally:
+      count=count-1
+      print(str(count)+"--------------------------")
 
   #
 
