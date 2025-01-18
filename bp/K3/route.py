@@ -73,6 +73,7 @@ def set_物料(s_物料):
   lb_b=lb_a.find_element(By.CLASS_NAME, f'k-input')
   print(lb_b)
   # 使用 JavaScript 执行器更新 span 元素的内容
+  lb_b.clear()
   lb_b.send_keys(s_物料)
   time.sleep(0.2)
   lb_b.send_keys(Keys.RETURN)  # 或者使用 Keys.ENTER，它们是等价的
