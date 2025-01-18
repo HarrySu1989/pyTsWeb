@@ -58,7 +58,7 @@ def index():
   <main class="form-signin w-100 m-auto">
 			<div class="form-floating">
 				<input  name="username" type="username" class="form-control" id="flow_input_ip" value="{values.flow_input_ip}">
-				<label for="floatingInput">IP</label>
+				<label for="floatingInput">IP</label> 
 			</div>
 			<div class="form-floating">
 				<input  name="username" type="username" class="form-control" id="flow_input_order" value="{values.flow_input_order}">
