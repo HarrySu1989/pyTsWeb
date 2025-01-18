@@ -7,17 +7,17 @@ from selenium.webdriver.common.keys import Keys
 import os
 import time
 bp = Blueprint('K3', __name__, url_prefix='/K3')
+chrome_options = Options()
+chrome_options.add_argument("--window-size=1200,1000")
+s_path = os.path.dirname(__file__)
+s_path=s_path.replace("K3","")
+s_exe = f"{s_path}flow\\chromedriver-130.0.6723.91.exe"
+service = Service(s_exe)
+driver = webdriver.Chrome(options=chrome_options, service=service)
+driver.get("http://erp.china-tscom.com")
 @bp.route('/', methods=['GET', 'POST'])
 def index():
-  chrome_options = Options()
-  chrome_options.add_argument("--window-size=1200,1000")
-  s_path = os.path.dirname(__file__)
-  s_path=s_path.replace("K3","")
-  s_exe = f"{s_path}flow\\chromedriver-130.0.6723.91.exe"
-  service = Service(s_exe)
-  driver = webdriver.Chrome(options=chrome_options, service=service)
-  driver.get("http://erp.china-tscom.com")
-  time.sleep(1)
+
   bt_begin = None
   for i in range(10):
     try:
@@ -107,6 +107,9 @@ def index():
   if not lb_a:
     return "无法获取下载按钮"
 
+  lb_a.click()
+  time.sleep(1)
+  lb_a = driver.find_element(By.CLASS_NAME, f"k-window-actions")
   lb_a.click()
   #
 
