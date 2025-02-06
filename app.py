@@ -6,16 +6,18 @@ from bp.bom.route import bp as bp_bom
 from bp.flow.route import bp as bp_flow
 from bp.purchase.route import bp as bp_purchase
 from bp.station.route import bp as bp_station
-from bp.K3.route import bp as bp_k3
-
+import glb.log as log
+# from bp.K3.route import bp as bp_k3
+log.add_log_b(f"RunA")
 app = Flask(__name__)
 app.secret_key = 'mysecretkey'
 vb.set_add(app, "工序", bp_station)
 vb.set_add(app, "采购单", bp_purchase)
 vb.set_add(app, "BOM", bp_bom)
 vb.set_add(app, "流量仪", bp_flow)
-vb.set_add(app, "K3", bp_k3)
+# vb.set_add(app, "K3", bp_k3)
 app.register_blueprint(bp_auth)
+log.add_log_b(f"RunB")
 
 
 #

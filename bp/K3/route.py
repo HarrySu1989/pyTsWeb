@@ -16,6 +16,7 @@ chrome_options.add_argument("--window-size=1200,1000")
 s_path = os.path.dirname(__file__)
 s_path=s_path.replace("K3","")
 s_exe = f"{s_path}flow\\chromedriver-130.0.6723.91.exe"
+s_exe = f"{s_path}flow\\chromedriver-133.exe"
 service = Service(s_exe)
 driver = webdriver.Chrome(options=chrome_options, service=service)
 driver.get("http://erp.china-tscom.com")

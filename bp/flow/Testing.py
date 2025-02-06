@@ -53,6 +53,7 @@ class Testing:
       # service = Service('./bp/flow/chromedriver-130.0.6723.91.exe')
       s_path=os.path.dirname(__file__)
       s_exe=f"{s_path}\\chromedriver-130.0.6723.91.exe"
+      s_exe = f"{s_path}\\chromedriver-133.exe"
       service = Service(s_exe)
       if b_local:
         self.driver = webdriver.Chrome(options=chrome_options, service=service)
