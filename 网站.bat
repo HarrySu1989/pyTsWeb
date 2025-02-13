@@ -1,3 +1,3 @@
 @echo off
-python "D:\Git\pyTsWeb-Run\run.py"
+python "C:\1\Git\pyTsWeb\run.py"
 pause
