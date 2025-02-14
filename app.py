@@ -7,8 +7,9 @@ from bp.flow.route import bp as bp_flow
 from bp.purchase.route import bp as bp_purchase
 from bp.station.route import bp as bp_station
 import glb.log as log
+import os
 # from bp.K3.route import bp as bp_k3
-log.add_log_b(f"RunA-test")
+log.add_log_b(f"程序根目录:"+os.path.dirname(__file__))
 app = Flask(__name__)
 app.secret_key = 'mysecretkey'
 vb.set_add(app, "工序", bp_station)
