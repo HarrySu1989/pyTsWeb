@@ -7,6 +7,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from datetime import datetime, timedelta
+import glb.log as log
 import time
 import threading
 import os
@@ -56,9 +57,13 @@ class Testing:
       s_exe = f"{s_path}\\chromedriver-133.exe"
       service = Service(s_exe)
       if b_local:
+        log.add_log_b(f"charmedriver加载方式:本地")
         self.driver = webdriver.Chrome(options=chrome_options, service=service)
+        log.add_log_b(f"charmedriver加载成功")
       else:
+        log.add_log_b(f"charmedriver加载方式:实时更新")
         self.driver = webdriver.Chrome(options=chrome_options)
+        log.add_log_b(f"charmedriver加载成功")
       print(f"self.driver:{self.driver}")
       return True
     except Exception as e:
