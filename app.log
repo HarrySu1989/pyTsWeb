@@ -1,2 +1,3 @@
-2025-02-15 11:32:50 - MyApp - INFO - Á®ãÂ∫èÊ†πÁõÆÂΩï:C:\1\Git\pyTsWeb
-2025-02-15 11:32:50 - MyApp - INFO - RunB
+2025-02-15 14:27:04,830 - INFO - log - add_log_b - 43 -  ˝æ›ø‚≈‰÷√:DRIVER={ODBC Driver 17 for SQL Server};SERVER=localhost;DATABASE=TestModuleResult;UID=sa;PWD=123456
+2025-02-15 14:27:05,270 - INFO - log - add_log_b - 43 - ≥Ã–Ú∏˘ƒø¬º:D:\1\pyTsWeb
+2025-02-15 14:27:05,273 - INFO - log - add_log_b - 43 - RunB
