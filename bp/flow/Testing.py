@@ -259,7 +259,6 @@ class Values:
   def __init__(self,s_flow_values=None):
     if s_flow_values is None:
       s_flow_values="10.77.77.108,test,test,1"
-    log.add_log_b("流量仪测试参数:"+s_flow_values)
     buf = s_flow_values.split(",")
     self.flow_input_ip = buf[0].strip()
     self.flow_input_order = buf[1].strip()
