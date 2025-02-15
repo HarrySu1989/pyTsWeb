@@ -1,3 +1,19 @@
 2025-02-15 14:27:04,830 - INFO - log - add_log_b - 43 - 数据库配置:DRIVER={ODBC Driver 17 for SQL Server};SERVER=localhost;DATABASE=TestModuleResult;UID=sa;PWD=123456
 2025-02-15 14:27:05,270 - INFO - log - add_log_b - 43 - 程序根目录:D:\1\pyTsWeb
 2025-02-15 14:27:05,273 - INFO - log - add_log_b - 43 - RunB
+2025-02-15 14:46:10,517 - INFO - log - add_log_b - 43 - 数据库配置:DRIVER={ODBC Driver 17 for SQL Server};SERVER=192.168.0.90;DATABASE=TestModuleResult;UID=xjs;PWD=Xia0601
+2025-02-15 14:46:13,743 - INFO - log - add_log_b - 43 - 程序根目录:C:\1\Git\pyTsWeb
+2025-02-15 14:46:13,752 - INFO - log - add_log_b - 43 - RunB
+2025-02-15 14:46:17,998 - INFO - log - add_log - 37 - [None]加载界面-流量仪
+2025-02-15 14:46:21,897 - INFO - log - add_log_b - 43 - charmedriver加载方式:本地
+2025-02-15 14:46:23,098 - INFO - log - add_log_b - 43 - charmedriver加载成功
+2025-02-15 14:48:25,971 - INFO - log - add_log - 37 - [None]加载界面-流量仪
+2025-02-15 14:49:23,890 - INFO - log - add_log_b - 43 - charmedriver加载方式:本地
+2025-02-15 14:49:25,080 - INFO - log - add_log_b - 43 - charmedriver加载成功
+2025-02-15 15:06:35,977 - INFO - log - add_log - 37 - [None]加载界面-流量仪
+2025-02-15 15:06:47,282 - INFO - log - add_log_b - 43 - charmedriver加载方式:本地
+2025-02-15 15:06:48,492 - INFO - log - add_log_b - 43 - charmedriver加载成功
+2025-02-15 15:16:56,959 - INFO - log - add_log_b - 43 - charmedriver加载方式:本地
+2025-02-15 15:16:58,087 - INFO - log - add_log_b - 43 - charmedriver加载成功
+2025-02-15 15:27:18,829 - INFO - log - add_log_b - 43 - charmedriver加载方式:本地
+2025-02-15 15:27:19,958 - INFO - log - add_log_b - 43 - charmedriver加载成功
